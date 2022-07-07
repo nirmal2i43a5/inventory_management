@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content-header %}
+<div class="card-header">
+  <div class="card-tools">
+    <a href="#" class="btn btn-tool">Print</a>
+    <a href="{% url 'product-update' object.id %}" class="btn btn-tool">
+      <i class="fas fa-edit"></i>
+    </a>
+    <a href="{% url 'product-delete' object.id %}" class="btn btn-tool">
+      <i class="fas fa-times"></i>
+    </a>
+  </div>
+</div>
+{% endblock content-header %}
+
+{% block content %}
+    <div class="row mb-4">
+      <div class="col-sm-8">
+
+    <h4> Product Description</h4>
+
+    {% if object %}
+        <p>{{object.description}}</p>
+    {% else %}
+        <p>There are no description for {{object}}</p>
+    {% endif %}
+
+
+{% endblock content %}

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content-header %}
+<div class="card-header">
+  <div class="card-tools">
+    <a href="#" class="btn btn-tool">Print</a>
+    <a href="{% url 'sales-update' sales.id %}" class="btn btn-success">
+     Edit
+    </a>
+    <a href="" class="btn btn-danger">
+      Delete
+    </a>
+  </div>
+</div>
+{% endblock content-header %}
+
+{% block content %}
+    <h4> Product Description</h4>
+
+    {% if object %}
+<h1>{{sales.customer.name}}</h1>
+<h2>{{sales.customer.phone_no}}</h2>
+<h2>{{sales.customer.email}}</h2>
+<h2>{{sales.customer.sold_date}}</h2>
+<h2>{{sales.customer.sale_code}}</h2>
+
+
+
+<div class='card'>
+					<div class='table-responsive'>
+					<table class='table' id='myTable'>
+						<thead>
+							<tr>
+								<th>Item</th>
+								<th>Quantity</th>
+								<th>Price</th>
+							</tr>
+						</thead>
+						<tbody>
+
+					{% for saleitem in sales.salesitem_set.all %}
+
+
+							<tr>
+								<td>{{ saleitem.product }}</td>
+                                <td>{{saleitem.quantity}}</td>
+                                <td>{{saleitem.total_price}}</td>
+
+							</tr>
+						{% endfor %}
+                        <tr>
+								<td class="btn btn-primary" style="width:40%">Total</td>
+                                <td style="font-size:20px">{{sales.total_qty}}</td>
+                                <td style="font-size:20px">{{sales.total_order}}</td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+					</div>
+
+
+				</div>
+    {% else %}
+        <p>There are no description for {{object}}</p>
+    {% endif %}
+
+
+{% endblock content %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Inventory{% endblock title %}
+
+{% block breadcrumb %}
+{% endblock breadcrumb %}
+
+{% block content %}
+  <div class="table-responsive">
+    <table id="dataTable" class="table table-bordered table-hover" data-page-length='100'>
+      <thead class="thead-light">
+        <tr>
+          <th>S/N</th>
+          <th>Name</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for sale in sales %}
+          <tr class='clickable-row' data-href="{% url 'sale-form' sale.id %}">
+            <td>{{ forloop.counter}}</td>
+            <td>{{ sale.product}}</td>
+          </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}
+
+
+{% block morejs %}
+
+
+{% endblock morejs %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Suppliers{% endblock title %}
+
+{% block breadcrumb %}
+<a class="btn btn-primary" href="{% url 'supplier-create' %}"><i
+    class="fas fa-plus"></i> New Supplier</a>
+{% endblock breadcrumb %}
+
+{% block content %}
+  <div class="table-responsive">
+    <table id="dataTable" class="table table-bordered table-hover" data-page-length='100'>
+      <thead class="thead-light">
+        <tr>
+          <th>S/N</th>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Email address</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for supp in supplier %}
+          <tr class='clickable-row' data-href="{% url 'supplier-detail' supp.id %}">
+            <td>{{ forloop.counter}}</td>
+            <td>{{ supp.name}}</td>
+            <td>{{ supp.address}}</td>
+            <td>{{supp.email}}</td>
+            <td>
+              <a class="fas fa-user-edit" href="{% url 'supplier-update' supp.id %}"></a>
+              <a href="{% url 'supplier-delete' supp.id %}" style="padding-left: 30px;color:red" class="fas fa-trash"></a>
+            </td>
+          </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}
+
+
+{% block morejs %}
+
+
+{% endblock morejs %}

@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}
+
+  {% if object %}
+    Update {{ object }}
+  {% else %}
+    Add new Sales
+  {% endif %}
+
+{% endblock title %}
+
+
+{% block content %}
+
+<form  action="" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  {% for field in form %}
+<div class="form-group row">
+  <label class="col-sm-3 col-form-label" for="{{ field.auto_id }}">
+    {{ field.label }}
+    {% if messages %}
+    {% for message in messages %}
+
+      <small id="{{ field.auto_id }}" class="text-danger">{{ message }}</small>
+    {% endfor %}
+    {% endif %}
+	  {% if form.errors %}
+	  <small id="{{ field.auto_id }}" class="text-danger">{{form.errors}}</small>
+
+	  {% endif %}
+  </label>
+
+  <div id="form-container" class="col-sm-9">
+    {{ field | add_class:"form-control"}}
+    {% if field.help_text %}
+    <small>{{ field.help_text|safe }}</small>
+    {% endif %}
+
+
+
+		<table class="table">
+		    {{ items.management_form }}
+
+		    {% for form in items.forms %}
+
+			{% if forloop.first %}
+			    <thead>
+			    <tr>
+				{% for field in form.visible_fields %}
+				    <th>{{ field.label|capfirst }}</th>
+				{% endfor %}
+			    </tr>
+			    </thead>
+			{% endif %}
+			<tbody class="tbody-class">
+			<tr class="formset_row" >
+			    {% for field in form.visible_fields %}
+				<td>
+				    {% if forloop.first %}
+					{% for hidden in form.hidden_fields %}
+					    {{ hidden }}
+					{% endfor %}
+				    {% endif %}
+				    {{ field.errors.as_ul }}
+					{{ field | add_class:"form-control" }}
+				</td>
+
+			    {% endfor %}
+			</tr>
+
+			</tbody>
+		    {% endfor %}
+		</table>
+			<button id="add-form" type="button" class="btn btn-primary">Add Row</button>
+
+	</div>
+
+</div>
+
+{% endfor %}
+
+  </div>
+</div>
+
+  {% if object %}
+    <input type="submit" class="btn btn-primary" value="Update Record">
+  {% else %}
+    <input type="submit" class="btn btn-primary" value="Add new Sales">
+  {% endif %}
+</form>
+
+{% endblock content %}
+
+  {% block morejs %}
+<script src="{% static 'dist/js/formset/jquery.formset.js' %}"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>-->
+<script>
+
+$('.formset_row').formset({
+        deleteText: 'remove',
+        prefix: 'items'
+
+    });
+
+		let birdForm = document.querySelectorAll(".formset_row")
+        let container = document.querySelector("#form-container")
+        let addButton = document.querySelector("#add-form")
+        let totalForms = document.querySelector("#id_salesitem_set-TOTAL_FORMS")
+		let tbody=document.querySelector('.tbody-class')
+		document.querySelector('.add-row').style.display="none";
+
+
+        let formNum = birdForm.length-1
+        addButton.addEventListener('click', addForm)
+
+        function addForm(e){
+            e.preventDefault()
+            let newForm = birdForm[0].cloneNode(true)
+            let formRegex = RegExp(`salesitem_set-(\\d){1}-`,'g')
+            formNum++
+            newForm.innerHTML = newForm.innerHTML.replace(formRegex, `salesitem_set-${formNum}-`)
+			tbody.appendChild(newForm)
+            totalForms.setAttribute('value', `${formNum+1}`)
+
+        }
+
+</script>
+
+  {% endblock morejs %}

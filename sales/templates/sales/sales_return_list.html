@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Sales Return{% endblock title %}
+
+{% block breadcrumb %}
+{% endblock breadcrumb %}
+
+{% block content %}
+  <div class="table-responsive">
+    <table id="dataTable" class="table table-bordered table-hover" data-page-length='100'>
+      <thead class="thead-light">
+        <tr>
+          <th>S/N</th>
+          <th>Name</th>
+          <th> Date</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for sale in sales %}
+          <tr>
+            <td>{{ forloop.counter}}</td>
+            <td>{{ sale.customer}}</td>
+            <td>{{ sale.date}}</td>
+            <td>
+              <a href="{% url 'sales-return' sale.id %}" class = "btn btn-success text-bold"><i class = "nav-icon fas fa-undo"></i>
+                 return sales </a>
+            </td>
+
+          </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}
+
+
+{% block morejs %}
+
+
+{% endblock morejs %}

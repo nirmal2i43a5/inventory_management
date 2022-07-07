@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Product List{% endblock title %}
+
+{% block breadcrumb %}
+<a class="btn btn-primary" href="{% url 'product-create' %}"><i
+    class="fas fa-plus"></i> New product</a>
+<a class="btn btn-primary" href="{% url 'product-upload' %}"><i
+    class="fas fa-upload"></i> Upload products</a>
+{% endblock breadcrumb %}
+
+{% block content %}
+  <div class="table-responsive">
+    <table id="dataTable" class="table table-bordered table-hover" data-page-length='100'>
+      <thead class="thead-light">
+        <tr>
+          <th>S/N</th>
+          <th>Product code</th>
+          <th>Product</th>
+          <th>Unit</th>
+          <th>Purchase price</th>
+          <th>Sale price</th>
+          <th>Supplier</th>
+          <th>Storage location</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for prod in products %}
+          <tr >
+            <td>{{ forloop.counter}}</td>
+            <td>{{ prod.product_code}}</td>
+            <td>{{ prod.product}}</td>
+            <td>{{prod.Quantity|floatformat:0}}</td>
+            <td>{{ prod.purchase_price}}</td>
+            <td>{{ prod.sale_price}}</td>
+            <td>{{ prod.supplier}}</td>
+            <td>{{ prod.stored_location}}</td>
+            <td>
+              <!-- <a href="{% url 'product-detail' prod.pk %}" class="btn btn-xs btn-success"><strong>View Details</strong> </a> -->
+              <a href="{% url 'product-update' prod.pk %}" class="btn btn-xs btn-success text-bold">Edit </a>
+              <a href="{% url 'product-delete' prod.pk %}" class="btn btn-xs btn-danger text-bold">Delete </a>
+            </td>
+
+
+
+          </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}
+
+
+{% block morejs %}
+
+
+{% endblock morejs %}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Sales List{% endblock title %}
+
+{% block breadcrumb %}
+<a class="btn btn-secondary" href="{% url 'existing-customer-list' %}"><i
+    class="fas fa-plus"></i>Existing Customer</a>
+<a class="btn btn-primary" href="{% url 'create-customer' %}"><i
+    class="fas fa-plus"></i> New sales</a>
+
+{% endblock breadcrumb %}
+
+{% block content %}
+  <div class="table-responsive">
+    <table id="dataTable" class="table table-bordered table-hover" data-page-length='100'>
+      <thead class="thead-light">
+        <tr>
+          <th>S/N</th>
+          <th>Name</th>
+          <th>Total order</th>
+          <th>Total Price</th>
+          <th>Action</th>
+
+
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for sale in sales %}
+          <tr >
+            <td>{{ forloop.counter}}</td>
+            <td>{{ sale.customer}}</td>
+            <td>{{sale.total_qty}}</td>
+            <td>{{sale.total_order}}</td>
+            <td>
+              <a href="{% url 'sales_details' sale.id %}" class = "btn btn-success"><i class = "fas fa-eye"></i> view sales details </a>
+            </td>
+
+          </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}
+
+
+{% block morejs %}
+
+
+{% endblock morejs %}
