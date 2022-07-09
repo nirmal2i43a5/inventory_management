@@ -4,7 +4,7 @@ django-computed-property==0.3.0
 django-crispy-forms==1.10.0
 django-widget-tweaks==1.4.8
 Pillow==9.2.0
-psycopg2-binary==2.8.6
+psycopg2-binary
 pytz==2019.3
 six==1.15.0
 sqlparse==0.3.1
