@@ -3,8 +3,8 @@
 {% load widget_tweaks %}
 {% block title %}
 
-  {% if object %}
-    Update {{ object }}
+  {% if sale_object %}
+    Update <strong>{{ sale_object }} </strong>Sales
   {% else %}
     Add new Sales
   {% endif %}
@@ -73,10 +73,10 @@
   </div>
 </div>
 
-  {% if object %}
-    <input type="submit" class="btn btn-primary" value="Update Record">
+  {% if sale_object %}
+    <input type="submit" class="btn btn-primary float-right" value="Update Record">
   {% else %}
-    <input type="submit" class="btn btn-primary" value="Add new Sales">
+    <input type="submit" class="btn btn-primary float-right" value="Add All Products">
   {% endif %}
 </form>
 
@@ -88,8 +88,8 @@
 <script type="text/javascript">
 
     $('.formset_row').formset({
-	addText: '<button class="btn btn-warning">Add item </button>',
-        deleteText: 'remove',
+	addText: '<button class="btn btn-success float-right">Add item </button>',
+        deleteText: '<button class="btn btn-danger">Remove </button>',
         prefix: 'items'
 
     });

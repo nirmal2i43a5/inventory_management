@@ -18,7 +18,8 @@ class Customer(models.Model):
     sale_code=models.CharField(max_length=LENGTH, editable=False, unique=True)
     phone_no=models.CharField(max_length=200, null=True)
     email = models.EmailField(null=True)
-    sold_date=models.DateField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
         return reverse('sales-create', kwargs={'pk': self.pk})
@@ -82,12 +83,21 @@ class Sales(models.Model):
 
 
 class SalesItem(models.Model):
+    # status=(
+    #     ('Pending','Pending'),
+    #     ('Delivered','Delivered'),
+    #     # ('Out for delivery','out for delivery')   
+    # )
+    
     class Meta:
         verbose_name_plural='salesitem'
     sales_id=models.ForeignKey(Sales, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=0)
     total_price = models.FloatField(null=True, blank=True)
+    # status=models.CharField(max_length=100,null=True,blank=True,choices=status,default='Delivered')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.product)

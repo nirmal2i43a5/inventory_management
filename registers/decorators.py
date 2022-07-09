@@ -37,7 +37,7 @@ def admin_only(view_func):
 
 		
 		
-		if group == 'admin':
+		if group == 'admin' or request.user.is_superuser:
 			return view_func(request, *args, **kwargs)
 
 	return wrapper_function

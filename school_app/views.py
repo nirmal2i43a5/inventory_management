@@ -8,9 +8,11 @@ from django.shortcuts import render
 from Inventory.models import Product
 from supplier.models import Supplier
 from sales.models import Customer
+from registers.decorators import admin_only
 
 
-@login_required
+# @login_required
+@admin_only
 def dashboard(request):
     total_product = Product.objects.count()
     total_supplier = Supplier.objects.count()
@@ -22,3 +24,11 @@ def dashboard(request):
 
     }
     return render(request, 'index.html', context)
+
+def front_page(request):
+ 
+    context = {
+ 
+
+    }
+    return render(request, 'front_page.html', context)

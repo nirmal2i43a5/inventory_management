@@ -68,6 +68,10 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 # 'corecode.context_processors.site_defaults',
             ],
+              'libraries':{
+            'auth_extras': 'school_app.templatetags.auth_extras',
+            
+            }
         },
     },
 ]

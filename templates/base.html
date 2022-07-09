@@ -1,5 +1,5 @@
 {% load static %}
-
+{% load auth_extras %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,7 +45,12 @@
 
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
+        {% if request.user.is_authenticated %}
+        
         <span class = "mt-2 text-bold">     Welcome,   {{request.user.username}}</span>
+        {% else %}
+        <span class = "mt-2 text-bold">     Welcome,   anonymous </span>
+        {% endif %}
 
         <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
@@ -57,9 +62,19 @@
               <i class="fas fa-user mr-2"></i> Profile
             </a>
             <div class="dropdown-divider"></div>
+            {% if request.user.is_authenticated %}
             <a href="{% url 'register_app:logout' %}" class="dropdown-item">
               <i class="fas fa-sign-out"></i> Sign out
             </a>
+            {% else %}
+            <a href="{% url 'register_app:login' %}" class="dropdown-item">
+              <i class="fas fa-sign-out"></i> Login
+            </a>
+            {% endif %}
+           
+         
+
+
           </div>
         </li>
       </ul>
@@ -78,10 +93,10 @@
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column"
             data-widget="treeview" role="menu" data-accordion="false">
-            <li class="nav-header">Inventory</li>
-{% if request.user.is_authenticated %}
+            {% comment %} <li class="nav-header">Inventory</li> {% endcomment %}
+        {% if request.user.is_authenticated %}
             <li class="nav-item">
-              <a href="{% url 'inventory_list' %}" class="nav-link">
+              <a href="{% url 'home' %}" class="nav-link">
                 <i class="nav-icon fas  fa-tachometer-alt"></i>
                 <p>
               Dashboard
@@ -140,10 +155,26 @@
                 </p>
               </a>
             </li>
-
+          </li>
+                  <li class="nav-item">
+          <a href="{% url 'register_app:logout' %}" class="nav-link">
+            <i class="nav-icon fas fa-sign-out-alt"></i>
+            <p>
+              Logout
+            </p>
+          </a>
+        </li>
+           
 
             {% else %}
-
+            <li class="nav-item">
+              <a href="{% url 'register_app:login' %}" class="nav-link">
+                <i class="nav-icon fas fa-sign-in-alt"></i>
+                <p>
+                  Login
+                </p>
+              </a>
+            </li>
             {% endif %}
 
           </ul>
@@ -258,7 +289,9 @@
 
   {% endblock morejs %}
 
+  {% block javascript %}
 
+  {% endblock javascript %}
 
 </body>
 

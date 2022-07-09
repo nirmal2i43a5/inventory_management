@@ -6,8 +6,8 @@ from .views import *
 from django.contrib.auth import views as auth_views
 from django.views.generic import TemplateView
 urlpatterns = [
-  path('', dashboard, name='home'),
-
+  path('dashboard/', dashboard, name='home'),
+  path('', front_page, name='front_page'),
     path('admin/', admin.site.urls),
     # path('accounts/', include('django.contrib.auth.urls')),
     	path('authentication/',include('registers.urls', namespace = 'register_app')),

@@ -101,12 +101,13 @@ def SalesUpdateView(request, sales_id):
             formset.save()
             from django.contrib import messages
             messages.success(request, 'Order successfully updated')
+            return redirect('sales_details', sales_id)
     else:
 
         form = SaleForm(instance=sale)
         formset = ItemFormset(instance=sale)
 
-    return render(request, 'sales/sales_update.html', {'form':form, 'formset' : formset})
+    return render(request, 'sales/sales_update.html', {'form':form, 'sale_object':sale,'formset' : formset})
 
 
 def sales_return_list(request):

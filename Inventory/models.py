@@ -12,6 +12,8 @@ class Product(models.Model):
     supplier=models.ForeignKey(Supplier,null=True,blank=True, on_delete=models.CASCADE)
     stored_location=models.CharField(max_length=200, null=True, blank=True)
     description = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 
