@@ -23,6 +23,23 @@
   <link
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700"
     rel="stylesheet">
+
+    <script
+type="text/javascript"
+src="{% static 'plugins/highcharts/highcharts.js' %}"
+></script>
+<script
+type="text/javascript"
+src="{% static 'plugins/highcharts/modules/exporting.js' %}"
+></script>
+<script
+type="text/javascript"
+src="{% static 'plugins/highcharts/modules/export-data.js' %}"
+></script>
+<script
+type="text/javascript"
+src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
+></script>
 </head>
 
 <body
@@ -128,6 +145,14 @@
                 <i class="nav-icon fas fa-store"></i>
                 <p>
                 Create   Customer 
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'customer-list' %}" class="nav-link">
+                <i class="nav-icon fas fa-users"></i>
+                <p>
+                Manage   Customer 
                 </p>
               </a>
             </li>

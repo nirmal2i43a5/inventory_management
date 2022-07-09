@@ -3,6 +3,9 @@ from .views import *
 
 urlpatterns=[
 path('',sales_list,name='sales-list'),
+path('customers/index/',manage_customers,name='customer-list'),
+  path('<pk>/update/', CustomerUpdateView.as_view(), name='customer-update'),
+path('<pk>/delete/', CustomerDeleteView.as_view(), name='customer-delete'),
 path('create/<int:pk>',SalesCreateView.as_view(),name='sales-create'),
 path('create-customer/', CustomerAddView.as_view(), name='create-customer'),
 path('sale-detail/<int:pk>',SalesDetail.as_view(), name='sales_details'),

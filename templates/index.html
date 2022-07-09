@@ -7,15 +7,34 @@
     <!-- Widgets  -->
     <div class="row">
         <div class="col-lg-3 col-md-6">
+
             <div class="card">
-                <div class="card-body">
+                <div class="card-body text-white"  style="background-color: #743DB8;">
                     <div class="stat-widget-five">
                         <div class="stat-icon dib flat-color-1">
-                            <i class="fa fa-cart-plus"></i>
                         </div>
                         <div class="stat-content">
                             <div class="text-left dib">
-                                <div class="stat-text"><span class="count"><b>{{ order }}</b> Order</span></div>
+                            <i class="fa fa-cart-plus"></i>
+                            Today Incomes<br>
+                                <div class="stat-text"><span class="count text-white"><b>Rs.{{ today_sales_price }}</b> </span></div>
+<!--                                <div class="stat-heading">Order</div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body bg-info">
+                    <div class="stat-widget-five">
+                       
+                        <div class="stat-content">
+                            <div class="text-left dib">
+                                <div class="stat-icon dib flat-color-1">
+                                </div>
+                                <i class="fa fa-cart-plus"></i>
+                                Today Sales
+                                <div class="stat-text"><span class="count"><b>{{ order }}</b>   </span></div>
 <!--                                <div class="stat-heading">Order</div>-->
                             </div>
                         </div>
@@ -26,14 +45,16 @@
 
         <div class="col-lg-3 col-md-6">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body bg-warning">
                     <div class="stat-widget-five">
-                        <div class="stat-icon dib flat-color-2">
-                            <i class="fab fa-product-hunt"></i>
-                        </div>
+                       
                         <div class="stat-content">
                             <div class="text-left dib">
-                                <div class="stat-text"><span class="count"><b>{{ product }}</b> Product</span></div>
+                                <div class="stat-icon dib flat-color-2">
+                                   
+                                </div> 
+                                <i class="fab fa-product-hunt"></i> Total Product
+                                <div class="stat-text"><span class="count"><b>{{ product }}</b></span></div>
 <!--                                <div class="stat-heading">Product</div>-->
                             </div>
                         </div>
@@ -44,14 +65,15 @@
 
         <div class="col-lg-3 col-md-6">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body bg-success">
                     <div class="stat-widget-five">
                         <div class="stat-icon dib flat-color-3">
-                            <i class="fa fa-paper-plane"></i>
+                          
                         </div>
                         <div class="stat-content">
                             <div class="text-left dib">
-                                <div class="stat-text"><span class="count"><b> {{supplier}}</b> Supplier</span></div>
+                                <i class="fa fa-paper-plane"></i>  Total Supplier
+                                <div class="stat-text"><span class="count"><b> {{supplier}}</b> </span></div>
 <!--                                <div class="stat-heading">Supplier</div>-->
                             </div>
                         </div>
@@ -62,14 +84,15 @@
 
         <div class="col-lg-3 col-md-6">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body bg-primary">
                     <div class="stat-widget-five">
                         <div class="stat-icon dib flat-color-4">
-                            <i class="fa fa-users"></i>
+                      
                         </div>
                         <div class="stat-content">
                             <div class="text-left dib">
-                                <div class="stat-text"><span class="count"><b>{{ order }}</b> Buyer</span></div>
+                                <i class="fa fa-users"></i>   Today Buyer
+                                <div class="stat-text"><span class="count"><b>{{ customer }}</b>   </span></div>
 <!--                                <div class="stat-heading">Buyer</div>-->
                             </div>
                         </div>
@@ -81,18 +104,18 @@
     <!-- /Widgets -->
 
     <div class="clearfix"></div>
-
+    
     <!-- Orders -->
     <div class="orders">
         <div class="row">
             <div class="col-xl-12">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="box-title">Orders </h4>
+                        <h4 class="box-title">Orders Summary </h4>
                     </div>
-                    <div class="card-body--">
-                        <div class="table-stats order-table ov-h">
-                            <table class="table ">
+                    <div class="card-body">
+                        <div  class="table-stats order-table ov-h">
+                            <table id = "dataTable" class="table ">
                                 <thead>
                                     <tr>
                                         <th class="serial">#</th>
@@ -108,10 +131,10 @@
                                     {% for order in orders %}
                                     <tr>
                                         <td class="serial">{{ forloop.counter }}</td>
-                                        <td>{{ order.supplier }}</td>
+                                        <td>{{ order.product.supplier }}</td>
                                         <td>{{ order.product }}</td>
-                                        <td>{{ order.buyer }}</td>
-                                        <td>{{ order.created_date }}</td>
+                                        <td>{{ order.sales_id.customer }}</td>
+                                        <td>{{ order.created_at }}</td>
                                         <td>
                                             {% if order.status == 'pending' %}
                                                 <a class="btn btn-warning" href="">{{ order.status }}</a>
@@ -141,6 +164,9 @@
 
 
         </div>
-    </div>
+    </div> 
     <!-- /.orders -->
 {% endblock content %}
+{% block javascript %}
+
+{% endblock javascript %}

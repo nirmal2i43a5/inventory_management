@@ -118,6 +118,26 @@ def existing_customer_list(request):
     sales=Customer.objects.all()
     return render(request,'sales/existing_customer.html',{'sales':sales})
 
+class CustomerUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = Customer
+    template_name = "sales/add_customer.html"
+    fields = '__all__'
+    success_message = "Record successfully updated."
+    success_url = reverse_lazy('customer-list')
+
+    def get_form(self):
+        form = super(CustomerUpdateView, self).get_form()
+        form.fields['name'].widget = widgets.Textarea(attrs={'rows': 1})
+        form.fields['phone_no'].widget = widgets.Textarea(attrs={'rows': 1})
+        form.fields['email'].widget = widgets.EmailInput(attrs={'rows': 1})
+
+        return form
+
+
+class CustomerDeleteView(LoginRequiredMixin, DeleteView):
+    model = Customer
+    template_name = "supplier/supplier_confirm_delete.html"
+    success_url = reverse_lazy('customer-list')
 
 class existing_sales_create(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Sales
@@ -193,3 +213,8 @@ class SalesReturnView(LoginRequiredMixin,DetailView,UpdateView):
                         sold_item.Quantity +=qt
                         sold_item.save()
         return super(SalesReturnView, self).form_valid(form)
+
+
+def manage_customers(request):
+    customers=Customer.objects.all()
+    return render(request,'sales/manage_customers.html',{'customers':customers})

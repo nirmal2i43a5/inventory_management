@@ -6,6 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 from Inventory.models import Product
+from datetime import datetime, timedelta
+from sales.forms import SaleItemForm
+from sales.models import Sales, SalesItem
 from supplier.models import Supplier
 from sales.models import Customer
 from registers.decorators import admin_only
@@ -14,21 +17,39 @@ from registers.decorators import admin_only
 # @login_required
 @admin_only
 def dashboard(request):
-    total_product = Product.objects.count()
-    total_supplier = Supplier.objects.count()
-    total_order=Customer.objects.count()
-    context = {
-        'product': total_product,
-        'supplier': total_supplier,
-        'order':total_order,
+	total_product = Product.objects.count()
+	total_supplier = Supplier.objects.count()
+	total_sales = SalesItem.objects.all()
+	# today_customers=Customer.objects.count()
+	# total_orders = SalesItem.objects.count()
 
-    }
-    return render(request, 'index.html', context)
+	today_customers = Customer.objects.filter(
+	created_at__gte=datetime.now() - timedelta(days=1)).count()
+	today_sales = SalesItem.objects.filter(
+		created_at__gte=datetime.now() - timedelta(days=1))
+
+	sales_total_price = 0.00
+
+	for sale in today_sales:
+		per_total_price = float(sale.product.sale_price) * sale.quantity
+		sales_total_price += per_total_price
+	context = {
+		'product': total_product,
+		'supplier': total_supplier,
+		'customer':today_customers,
+		'order':today_sales.count(),
+		'today_sales_price': sales_total_price,
+		'orders':total_sales
+
+	}
+	return render(request, 'index.html', context)
+
+
 
 def front_page(request):
  
-    context = {
+	context = {
  
 
-    }
-    return render(request, 'front_page.html', context)
+	}
+	return render(request, 'front_page.html', context)
