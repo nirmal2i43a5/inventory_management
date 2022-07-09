@@ -32,7 +32,9 @@ INSTALLED_APPS = [
     'Inventory',
     'supplier',
     'sales',
+    'registers',
     'crispy_forms',
+       'django_filters',
     'computed_property',
 
 ]
@@ -142,9 +144,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+# LOGIN_REDIRECT_URL = '/'
 
-LOGIN_REDIRECT_URL = '/'
-
-LOGOUT_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/authentication/login/'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

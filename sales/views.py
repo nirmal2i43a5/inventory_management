@@ -45,7 +45,7 @@ class SalesCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
                     qt=i.cleaned_data['quantity']
                     sold_item=Product.objects.get(product=product)
                     if sold_item.Quantity < qt:
-                        form.errors['value']='Your entered quantity exceeds inventory quantity'
+                        form.errors['VALUE ERROR :: ']='Your entered quantity exceeds inventory quantity'
                         return self.form_invalid(form)
                     else:
                         data[product] =qt

@@ -1,0 +1,333 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Dashboard</title>
+    <!--I include this later-->
+    <!-- <script src="{% static 'js/jquery-3.1.1.min.js' %}" crossorigin="anonymous"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link href="{% static 'vendor/css/styles.css' %}" rel="stylesheet" />
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet"
+        crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js"
+        crossorigin="anonymous"></script>
+        
+</head>
+
+<body class="sb-nav-fixed">
+    <div class="row">
+      
+            <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+                <a class="navbar-brand" href="/"><i class="fas fa-home"></i> Home</a>
+                <button type="button" id="sidebarToggle" class="btn btn-warning text-black-50">
+                    <i class="fas fa-align-left"></i>
+                  </button>
+
+                 
+                    <div class="col">
+                
+                        <span class=" float-right" style="color:white;"> Hello, {{request.user.username}}</span>
+                       
+                    </div>
+                  
+               
+                 
+                    <div class="col">
+                         
+                       <a class="btn btn-sm btn-warning float-right" data-toggle="modal" data-target="#logOutModal" style="cursor: pointer;">  <i class="fa fa-sign-in-alt"></i> LOGOUT</a>
+                    </div>
+                   
+                 
+        
+            </nav>
+        </div>
+     
+    </div>
+  
+   
+
+    <!--logout model js popup for confirm or stay-->
+    <div id="logOutModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Want to leave ?</h4>
+                    <button class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    Press logout to leave !
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" data-dismiss="modal"><!--model-dismiss la same page ma lauxa-->
+                        Stay Here
+                    </button>
+                    <a class="btn btn-danger"  href="{% url 'register_app:logout' %}">
+                        Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">Functions</div>
+                        <a class="nav-link" href="/dashboard">
+                            <div class="sb-nav-link-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            Dashboard
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Interface</div>
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts"
+                            aria-expanded="false" aria-controls="collapseLayouts">
+                            <div class="sb-nav-link-icon">
+                                <i class="fas fa-columns"></i>
+                            </div>
+                            Pages
+                            <div class="sb-sidenav-collapse-arrow">
+                                <i class="fas fa-angle-down"></i></div>
+                        </a>
+
+                        <div class="(collapse)" id="collapseLayouts" aria-labelledby="headingOne"
+                            data-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="{% url 'product_app:list'%}"><i class="fas fa-bars"></i><span class="ml-1">Products</span></a>
+                                <a class="nav-link" href="{% url 'order_app:list'%}"><i class="fas fa-bars"></i><span class="ml-1">Orders</span></a>
+                                <a class="nav-link" href="{% url 'customer_app:list'%}"><i class="fas fa-bars"></i><span class="ml-1">Customers</span></a>
+                              
+                            </nav>
+                        </div>
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+                            aria-expanded="false" aria-controls="collapsePages">
+
+                            <div class="sb-nav-link-icon">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            Authentication
+                            <div class="sb-sidenav-collapse-arrow">
+                                <i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="(collapse)" id="collapsePages" aria-labelledby="headingTwo"
+                            data-parent="#sidenavAccordion">
+
+                            <nav class="sb-sidenav-menu-nested nav">
+                                {% if user.is_authenticated %}
+                             
+                                <a class="nav-link" href="{% url 'register_app:logout'%}"><i class="fas fa-sign-out-alt"></i>Logout</a>
+
+                                {% else %}
+                                <a class="nav-link" href="{% url 'register_app:login'%}">Login</a>
+                                <a class="nav-link" href="{% url 'register_app:register'%}">Register</a>
+                                {% endif %}
+                            </nav>
+
+                            <!-- <div class="sb-sidenav-menu-heading">Addons</div>
+                            <a class="nav-link" href="#">
+                                <div class="sb-nav-link-icon">
+                                    <i class="fas fa-chart-area"></i>
+                                </div>
+                                Charts
+                            </a> -->
+                        </div>
+                    </div>
+                   
+            </nav>
+        </div>
+
+        <div id="layoutSidenav_content">
+            <main>
+
+              <div class= "text-center"><strong>Last Login :</strong> {{request.user.last_login}}</div> 
+              
+           
+                <div class="card-body">
+                    <h2 class="card-header">Supermarket Management System</h2>
+                
+                
+                </div>
+
+
+                <div class="row">
+
+                    <div class="col">
+                        <div class="col-md">
+                            <div class="card bg-secondary text-center text-white  mb-3" id="orders-delivered">
+                                <div class="card-header">
+                                    <h5 class="card-title">Today Sales</h5>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">${{orders_total_price}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-5 ml-3">
+                            <a href="{% url 'order_app:list' %}" class="btn btn-warning"><i class="fas fa-eye"></i>  View Orders</a>
+                        </div>
+
+                    </div>
+                  
+                    <div class="col">
+                        <div class="col-md">
+                            <div class="card bg-info text-center text-white  mb-3" id="orders-pending">
+                                <div class="card-header">
+                                    <h5 class="card-title">Today Customers</h5>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{today_customers}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-5 ml-3">
+                            <a href="{% url 'customer_app:list'%}" class="btn btn-warning"><i class="fas fa-eye"></i>  View details</a>
+                        </div>
+
+                    </div>
+
+              
+
+                    <div class="col">
+                        <div class="col-md">
+                            <div class="card bg-primary text-center text-white ml-2 mb-3" id="total-orders">
+                                <div class="card-header">
+                                    <h5 class="card-title">Total Products</h5>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{total_products}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-5 ml-4">
+                            <a href="{% url 'product_app:list' %}" class="btn btn-warning"><i class="fas fa-eye"></i>  View details</a>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="col-md">
+                            <div class="card bg-success text-center text-white  mb-3" id="orders-pending">
+                                <div class="card-header">
+                                    <h5 class="card-title">Total Customers</h5>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{total_customers}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-5 ml-3">
+                            <a href="{% url 'customer_app:list'%}" class="btn btn-warning"><i class="fas fa-eye"></i>  View details</a>
+                        </div>
+
+                    </div>
+                </div>
+                <!--chart for content-->
+                <div class="card mb-4">
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="card-header"><i class="fas fa-table mr-1"></i>Summary Table<hr>
+                             
+                
+                                    {% include 'registers/index_search.html' %}
+                             
+                        </div>
+                        
+                    </div>
+                    
+                   
+                       
+                </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+
+                            <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>View</th>
+                                        <th>Customer</th>
+                                        <th>Customer Id</th>
+                                   
+                                        <th>Date</th>
+                                        <!-- <th>Total Price</th> -->
+                                    </tr>
+                                </thead>
+                             {% for customer in customers %}
+
+                             <tbody>
+                                <tr>
+                                    <td><a href=" {% url 'customer_app:bill' customer.id  %}"><i class="fas fa-2x fa-file-pdf"></i></a></td>
+                                    <td>{{customer.name}}</td>
+                                    <td>{{customer.id}}</td>
+                               
+                                    <td>{{customer.date_created}}</td>
+                                    <!-- <td>{{particular_customer_price}}</td> -->
+                                </tr>
+                            
+                            </tbody>
+
+
+                            {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid">
+                        <div class="d-flex align-items-center justify-content-between small">
+                         <strong>   <div class="text-muted">Copyright &copy; Nirmal Pandey 2020</div></strong>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                </h3>
+        </div>
+     
+
+     
+   
+
+   
+
+    
+        <script>
+
+    $(document).ready(function(){
+        var path = window.location.href; // because the 'href' property of the DOM element is the absolute path
+        $("#layoutSidenav_nav .sb-sidenav a.nav-link").each(function() {
+            if (this.href === path) {
+                $(this).addClass("active");
+            }
+        });
+
+    // Toggle the side navigation
+    $("#sidebarToggle").on("click", function(e) {
+        e.preventDefault();
+        $("body").toggleClass("sb-sidenav-toggled");
+    });
+
+    })
+    
+        </script>
+
+     
+        
+</body>
+
+
+</html>

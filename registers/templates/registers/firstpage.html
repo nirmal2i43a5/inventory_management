@@ -1,0 +1,282 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock%}
+
+{% block javascript %}
+{% endblock %}
+
+{% block content %}
+
+
+<body class="sb-nav-fixed">
+
+   
+
+<div class="row">
+    <nav  class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">Supermarket</a>
+        <!-- <button class="btn btn-link btn-sm order-1 order-lg-0"
+            id="sidebarToggle" href="#">
+            <span class="navbar-toggler-icon"></span>
+        </button> -->
+
+        <button type="button" id="sidebarToggle" class="btn btn-warning text-black-50">
+            <i class="fas fa-align-left"></i>
+          </button>
+
+         
+
+           <!-- <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
+          data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-align-justify"></i>
+          </button>
+       
+  
+        <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
+   
+
+        {% if request.user.is_authenticated  %}
+
+        <div class="col">
+       
+                
+            <a class="float-right" style="color:white;"> Hello, {{request.user.username}} </a>
+           
+        </div>
+
+                {% if request.user.is_superuser %}
+
+
+         
+                
+            <!-- <button  class="btn btn-sm btn-warning float-right" data-toggle="modal" data-target="#adminModel">
+                I am getting profile in the same page so dont need href i include user_view in this page
+
+              <i class="fas fa-eye"></i>  Profile
+
+            </button> -->
+
+
+                <div class="col">
+                    <a class="btn btn-sm btn-warning float-right" data-toggle="modal" data-target="#logOutModal" style="cursor: pointer;">  <i class="fa fa-sign-in-alt"></i> LOGOUT</a>
+                 </div>
+
+                 {% else %} 
+
+                 <!-- <button  class="btn btn-sm btn-warning float-right" data-toggle="modal" data-target="#employeeModel">
+                     I am getting profile in the same page so dont need href i include user_view in this page
+
+                <i class="fas fa-eye"></i>  Profile
+
+                 </button> -->
+                 <div class="col">
+                     <a class="btn btn-sm btn-warning float-right" data-toggle="modal" data-target="#logOutModal" style="cursor: pointer;">  <i class="fa fa-sign-in-alt"></i> LOGOUT</a>
+                  </div>
+
+                {% endif %}
+                
+         {% else %}
+
+         <div class="col">
+          
+                
+            <a class="float-right" style="color:white;"> Hello, Unknown </a>
+           
+        </div>
+
+        <div class="col">
+            <a href="{% url 'register_app:login'%}" class=" btn btn-sm btn-warning float-right" style="color:black;width:100px;">
+                    
+                <span><i class="fa fa-sign-in-alt"></i>  LOGIN</span>
+
+            
+             </a>
+
+        </div>
+
+           
+     <a href="{% url 'register_app:register'%}" class=" btn btn-sm btn-warning" style="color:black;width:100px;">
+        <span>
+
+            <i class="fa fa-user-plus"></i>  SIGNUP
+        </span>
+
+    </a>
+    
+
+     {% endif %}
+
+      
+      
+      
+    </nav>
+
+</div>
+
+{% include 'registers/user_view.html' %}
+
+{% include 'registers/admin_view.html' %}
+
+
+<div id="logOutModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Want to leave ?</h4>
+                <button class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                Press logout to leave !
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" data-dismiss="modal"><!--model-dismiss la same page ma lauxa-->
+                    Stay Here
+                </button>
+                <a class="btn btn-danger"  href="{% url 'register_app:logout' %}">
+                    Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Products</a>
+            </li>
+          </ul>
+        </div>
+      </nav> -->
+
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <!-- <div class="sb-sidenav-menu-heading">Functions</div> -->
+                        {% if request.user.is_superuser %}
+                        <a class="nav-link" href="/dashboard">
+                            <div class="sb-nav-link-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            Dashboard
+                        </a>
+                        {% endif %}
+                        <div class="sb-sidenav-menu-heading">Interface</div>
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLayouts"
+                            aria-expanded="false" aria-controls="collapseLayouts">
+                            <div class="sb-nav-link-icon">
+                                <i class="fas fa-columns"></i>
+                            </div>
+                            Pages
+                            <div class="sb-sidenav-collapse-arrow">
+                                <i class="fas fa-angle-down"></i></div>
+                        </a>
+
+                        <div class="(collapse)" id="collapseLayouts" aria-labelledby="headingOne"
+                            data-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="{% url 'product_app:list'%}"><i class="fas fa-bars"></i><span class="ml-1">Products</span></a>
+                                <a class="nav-link" href="{% url 'order_app:list'%}"><i class="fas fa-bars"></i><span class="ml-1">Orders</span></a>
+                                <a class="nav-link" href="{% url 'customer_app:list'%}"><i class="fas fa-bars"></i><span class="ml-1">Customers</span></a>
+                            </nav>
+                        </div>
+                        
+
+                        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+                            aria-expanded="false" aria-controls="collapsePages">
+                            <div class="sb-nav-link-icon">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            Authentication
+                            <div class="sb-sidenav-collapse-arrow">
+                                <i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="(collapse)" id="collapsePages" aria-labelledby="headingTwo"
+                            data-parent="#sidenavAccordion">
+
+                            <nav class="sb-sidenav-menu-nested nav">
+                                {% if user.is_authenticated %}
+                                <a class="nav-link" href="{% url 'register_app:logout'%}"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                                <a class="nav-link" href="/reset_password"><i class="fas fa-bars"></i><span class="ml-1"></span>Change Password</a>
+
+                                {% else %}
+
+                              
+
+
+                               
+                                    <a class="nav-link" href="{% url 'register_app:login'%}">Login</a>
+                              
+                                <a class="nav-link" href="{% url 'register_app:register'%}">Register</a>
+                                {% endif %}
+                                  
+                            </nav>
+
+
+
+                        </div>
+                      
+                    </div>
+                </div>
+               
+            </nav>
+        </div>
+
+
+
+
+    </div>
+    </div>
+
+</body>
+
+
+
+
+<br><br><br>
+
+
+{% if request.user.is_authenticated %}
+
+        <div class="text-center"><strong>Time : {{current_date}}</strong></div>
+        <!-- <div class="text-center"><strong>Last Login : {{current_date}}</strong></div> -->
+
+
+{% endif %}
+   
+
+
+<br>
+<div class="card" style="margin-left:18%;margin-right:10%;">
+
+    <h3 class="card-header border-dark" style="text-align:center;">Supermarket Management System</h3>
+   
+</div>
+<img src="static/image/supermarket.jpg" />
+
+<style>
+    img {
+        width: 70%;
+        height: 430px;
+        margin-top: 1%;
+        margin-bottom: 2%;
+        margin-left:19%;
+    }
+
+    body{
+		background: #a1c4fd;
+	
+	  }
+</style>
+
+{% endblock %}
+

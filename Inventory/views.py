@@ -32,6 +32,7 @@ class ProductCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Product
     template_name = "inventory/product_form.html"
     fields = '__all__'
+    success_url = reverse_lazy('inventory_list')   
     success_message = "New product successfully added."
 
     def get_form(self):

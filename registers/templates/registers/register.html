@@ -1,0 +1,53 @@
+
+
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+    {% block content %}
+    
+    
+        <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+                <main>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-5">
+                                <div class="card shadow-lg border-0 rounded-lg mt-5" >
+                                    <div class="card-header"><h2 class="text-center font-weight-light my-4">Register</h2></div>
+                                    
+                                    <div class="card-body">
+                                      
+                                        <form method="POST" class="justify-content-center" enctype="multipart/form-data" >
+                                          {% csrf_token %}
+
+                                         
+                                                {{form|crispy}}
+                                           
+                                            
+                                            <input type="submit" name="submit" value="SignUp" class="btn btn-block btn-success">
+                                           
+                                        </form>
+                                        
+                                    </div>
+                                 
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+            
+        </div>
+        <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="js/scripts.js"></script> -->
+    <style>
+        body{
+            background: #a1c4fd;
+        
+          }
+    </style>
+{% endblock %}
+
+<!-- 

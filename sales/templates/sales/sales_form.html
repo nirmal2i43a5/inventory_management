@@ -13,30 +13,31 @@
 
 
 {% block content %}
+ {% if messages %}
+    {% for message in messages %}
+ 
+      <div id="{{ field.auto_id }}" class="text-danger">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
 
+   
+      {% if form.errors %}
+   
+      <div id="{{ field.auto_id }}" class="text-white alert alert-danger">{{form.errors}}</div>
+  
+      {% endif %}
+ 
 <form  action="" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
 
   {% for field in form %}
 <div class="form-group row">
-  <label class="col-sm-3 col-form-label" for="{{ field.auto_id }}">
-    {{ field.label }}
-    {% if messages %}
-    {% for message in messages %}
 
-      <small id="{{ field.auto_id }}" class="text-danger">{{ message }}</small>
-    {% endfor %}
-    {% endif %}
-	  {% if form.errors %}
-	  <small id="{{ field.auto_id }}" class="text-danger">{{form.errors}}</small>
-
-	  {% endif %}
-  </label>
 
   <div id="form-container" class="col-sm-9">
     {{ field | add_class:"form-control"}}
     {% if field.help_text %}
-    <small>{{ field.help_text|safe }}</small>
+    <div>{{ field.help_text|safe }}</div>
     {% endif %}
 
 

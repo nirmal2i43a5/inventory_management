@@ -1,0 +1,58 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Admin-Profile{% endblock %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'registers/view.css' %}" />
+
+{% endblock %}
+
+{% block content %}
+
+
+<div class="modal fade" id="adminModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title " style="margin-left: 150px;" id="exampleModalLabel">Admin Profile</h5>
+
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+
+            <div id="box">
+                <!-- <img id="profile_pic" src="{{request.user.profile.profile_img.url}}"> use this if not use imageurl decorator -->
+                <img id="profile_pic" src="{% static 'image/admin.jpg' %}"/><!--calling decorator in models.py-->
+            
+              
+            
+                <!-- <h2>Hey, Im {{request.user.username}}</h2> -->
+                <h2>Hey, Im {{user.username}}</h2>
+                
+                <p>{{user.email}}</p>
+                <p>Butwal,Suddhodhan-1</p>
+                <p>+977-9865542614</p>
+                <!-- <p>{{ user.get_full_name }}</p> -->
+                <!-- <p>{{ user.last_login }}</p> -->
+                <!-- <p>{{ user.groups.all.0 }}</p> -->
+               
+            
+            </div>
+            
+
+           
+         
+        </div>
+      
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}
