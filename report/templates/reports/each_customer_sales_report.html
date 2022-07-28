@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Sales List{% endblock title %}
+{% block title %}{{customer.name}} ::Sales Report{% endblock title %}
 
 {% block breadcrumb %}
 <a class="btn btn-secondary" href="{% url 'existing-customer-list' %}"><i
@@ -16,10 +16,10 @@
       <thead class="thead-light">
         <tr>
           <th>S/N</th>
-          <th>Name</th>
+          <th>Product</th>
           <th>Total order</th>
           <th>Total Price</th>
-          <th>Created Date</th>
+          <th>Date</th>
           <th>Action</th>
 
 
@@ -30,7 +30,7 @@
         {% for sale in sales %}
           <tr >
             <td>{{ forloop.counter}}</td>
-            <td>{{ sale.customer}}</td>
+            <td>{{ sale.order_item}}</td>
             <td>{{sale.total_qty}}</td>
             <td>{{sale.total_order}}</td>
             <td>{{sale.date}}</td>

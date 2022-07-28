@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load auth_extras %}
+{% block title %}Product Report{% endblock title %}
+
+
+
+{% block content %}
+  <div class="table-responsive">
+    <table id="dataTable" class="table table-bordered table-hover" data-page-length='100'>
+      <thead class="thead-light">
+        <tr>
+          <th>S/N</th>
+          <th>Product</th>
+          <!-- <th>Total Unit</th> -->
+          <th>Total Sales</th>
+          <th>Stock</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for prod in sales_quantity_dataset %}
+          <tr >
+            <td>{{ forloop.counter}}</td>
+            <td>{{ prod.product}}</td>
+            <!-- <td>{{prod.total_product|floatformat:0}}</td> -->
+            <td>{{prod.sales_quantity}}</td>
+            <td>
+                
+                {% if prod.product.Quantity == 0 %}
+                  <span class="badge badge-danger">Out of Stock</span>
+              
+                {% else %}
+                {{prod.product.Quantity|floatformat:0}}
+                <span class="badge badge-success">In Stock</span>
+                    
+                {% endif %}
+                    
+            </td>
+       
+
+
+          </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}
+
+
+{% block morejs %}
+
+
+{% endblock morejs %}

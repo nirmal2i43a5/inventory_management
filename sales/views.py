@@ -44,16 +44,18 @@ class SalesCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
                     product=prod.product
                     qt=i.cleaned_data['quantity']
                     sold_item=Product.objects.get(product=product)
-                    if sold_item.Quantity < qt:
-                        form.errors['VALUE ERROR :: ']='Your entered quantity exceeds inventory quantity'
-                        return self.form_invalid(form)
-                    else:
-                        data[product] =qt
+                    if qt <= sold_item.Quantity:
+                        data[product] = qt
                         print(data)
                         sold_item.Quantity -=qt
                         sold_item.save()
                         form.save()
                         items.save()
+                     
+                    else:
+                        form.errors['VALUE ERROR :: ']='Your entered quantity exceeds inventory quantity'
+                        return self.form_invalid(form)
+                        
         return super(SalesCreateView, self).form_valid(form)
 
     def get_initial(self):
@@ -163,8 +165,10 @@ class existing_sales_create(LoginRequiredMixin, SuccessMessageMixin, CreateView)
                     prod = i.cleaned_data['product']
                     product=prod.product
                     qt=i.cleaned_data['quantity']
+                    print(qt)
                     sold_item=Product.objects.get(product=product)
-                    if sold_item.Quantity > qt:
+                    print(sold_item.Quantity)
+                    if qt <= int(sold_item.Quantity):
                         sold_item.Quantity -= qt
                         sold_item.save()
                         form.save()
@@ -196,7 +200,7 @@ class SalesReturnView(LoginRequiredMixin,DetailView,UpdateView):
         context = self.get_context_data()
         name=context['object']
         name_id=Customer.objects.get(name=name)
-        sales_id=Sales.objects.get(customer_id=name_id)
+        sales_id=Sales.objects.filter(customer_id=name_id).first()
         items = context['items']
         with transaction.atomic():
             if items.is_valid():

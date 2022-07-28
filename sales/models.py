@@ -77,6 +77,11 @@ class Sales(models.Model):
             total_qty = (order_item.quantity + total_qty)
         return total_qty
 
+    @property
+    def order_item(self):
+        order_item = SalesItem.objects.filter(sales_id=self.id).first()
+        return order_item
+
 
     def get_absolute_url(self):
         return reverse('sales_details', kwargs={'pk': self.pk})

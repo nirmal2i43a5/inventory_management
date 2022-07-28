@@ -24,22 +24,7 @@
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700"
     rel="stylesheet">
 
-    <script
-type="text/javascript"
-src="{% static 'plugins/highcharts/highcharts.js' %}"
-></script>
-<script
-type="text/javascript"
-src="{% static 'plugins/highcharts/modules/exporting.js' %}"
-></script>
-<script
-type="text/javascript"
-src="{% static 'plugins/highcharts/modules/export-data.js' %}"
-></script>
-<script
-type="text/javascript"
-src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
-></script>
+
 </head>
 
 <body
@@ -99,9 +84,9 @@ src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
     <!-- /.navbar -->
 
     <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4"  style="background-color: #743DB8;border-radius:12px;">
+    <aside class="main-sidebar sidebar-dark-primary elevation-4" >
       <!-- Brand Logo -->
-      <a href="{% url 'home' %}"  style="background-color: #743DB8;border-radius:12px;" class="brand-link">{{ school_name | default:"Grocery Inventory" }}</a>
+      <a href="{% url 'home' %}"  class="brand-link">{{ school_name | default:"Grocery Inventory" }}</a>
 
       <!-- Sidebar -->
       <div class="sidebar">
@@ -110,7 +95,7 @@ src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column"
             data-widget="treeview" role="menu" data-accordion="false">
-            {% comment %} <li class="nav-header">Inventory</li> {% endcomment %}
+            <li class="nav-header">Inventory</li>
         {% if request.user.is_authenticated %}
             <li class="nav-item">
               <a href="{% url 'home' %}" class="nav-link">
@@ -163,15 +148,15 @@ src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
                   Sales to Customer
                 </p>
               </a>
-            </li>
-            <li class="nav-item">
+            </li> 
+            <!-- <li class="nav-item">
               <a href="{% url 'sales-list' %}" class="nav-link">
                 <i class="nav-icon fas fa-store"></i>
                 <p>
                   Manage Sales
                 </p>
               </a>
-            </li>
+            </li>  -->
                      <li class="nav-item">
               <a href="{% url 'sales-return-list' %}" class="nav-link">
                 <i class="nav-icon fas fa-undo"></i>
@@ -180,6 +165,38 @@ src="{% static 'plugins/highcharts/modules/accessibility.js' %}"
                 </p>
               </a>
             </li>
+          </li> 
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fas  fa-book"></i>
+              <p>
+                Report
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+      
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{% url 'product_report' %}" class="nav-link">
+                  <i class="fas  fa-circle"></i>
+                  <p>
+                    Product
+          
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'customers_report' %}" class="nav-link">
+                  <i class="fas  fa-circle"></i>
+                  <p>
+                    Sales
+          
+                  </p>
+                </a>
+              </li>
+             
+          
+            </ul>
           </li>
                   <li class="nav-item">
           <a href="{% url 'register_app:logout' %}" class="nav-link">

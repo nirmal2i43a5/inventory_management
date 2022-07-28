@@ -123,7 +123,7 @@
                                         <th>Product</th>
                                         <th>Buyer</th>
                                         <th>Date</th>
-                                        <th>Status</th>
+                                        {% comment %} <th>Status</th> {% endcomment %}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -135,7 +135,7 @@
                                         <td>{{ order.product }}</td>
                                         <td>{{ order.sales_id.customer }}</td>
                                         <td>{{ order.created_at }}</td>
-                                        <td>
+                                        {% comment %} <td>
                                             {% if order.status == 'pending' %}
                                                 <a class="btn btn-warning" href="">{{ order.status }}</a>
                                             {% elif order.status == 'decline' %}
@@ -149,7 +149,7 @@
                                             {% else %}
                                                 <a class="btn btn-info" href="">{{ order.status }}</a>
                                             {% endif %}
-                                        </td>
+                                        </td> {% endcomment %}
                                     </tr>
                                     {% endfor %}
                                     {% else %}

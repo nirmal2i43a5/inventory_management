@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Sales Return{% endblock title %}
+{% block title %}Customer Sales Report{% endblock title %}
 
 {% block breadcrumb %}
 {% endblock breadcrumb %}
@@ -12,22 +12,21 @@
         <tr>
           <th>S/N</th>
           <th>Name</th>
-          <th> Date</th>
-         <th>Action</th>
+          <th>Created Date</th>
+          <th>Action</th>
+
         </tr>
       </thead>
       <tbody>
 
-        {% for sale in sales %}
-          <tr>
+        {% for customer in customers %}
+          <tr >
             <td>{{ forloop.counter}}</td>
-            <td>{{ sale.customer}}</td>
-            <td>{{ sale.date}}</td>
+            <td>{{ customer.name}}</td>
+            <td>{{ customer.created_at}}</td>
             <td>
-         <a href="{% url 'sales-return' sale.id %}" class = "btn btn-success text-bold"><i class = "nav-icon fas fa-undo"></i>
-                 return sales </a> 
+              <a href="{% url 'each-sales-report' customer.id %}" class = "btn btn-info"><i class = "fas fa-eye"></i> View report </a>
             </td>
-
           </tr>
         {% endfor %}
 

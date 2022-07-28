@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'Inventory',
     'supplier',
     'sales',
+    'report',
     'registers',
     'crispy_forms',
        'django_filters',
