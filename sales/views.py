@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+import datetime
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,10 +14,13 @@ from django.urls import reverse_lazy
 from Inventory.models import *
 from .models import Sales, SalesItem
 from .forms import *
+from django.http import JsonResponse
 @login_required
 def sales_list(request):
     sales=Sales.objects.all().order_by('-id')
     return render(request,'sales/sales_list.html',{'sales':sales})
+
+
 
 class SalesCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Sales
@@ -82,6 +86,23 @@ class CustomerAddView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     success_message = "New Customer successfully added."
 
 
+
+def sales_details(request,pk):
+    customer_instance = Customer.objects.get(id=pk)
+    print(customer_instance)
+    # sales_instance = Sales.objects.get(pk = pk)
+    sales = customer_instance.sales_set.all().filter(date = datetime.date.today())
+    sales_dataset = []
+    sales_items = SalesItem.objects.filter(sales_id__customer = customer_instance,sales_id__date = datetime.date.today())
+    for sale in sales:
+        sale_itm = Sales.objects.filter(pk = sale.id)
+        sales_dataset.append({'sale_itm':sale_itm})
+    print(sales_dataset)
+        
+    print(sales_items)
+    context = {'sales_items':sales_items,'customer_instance':customer_instance,'sales':sales_dataset}
+    return render(request,'sales/sales_detail.html',context)
+
 class SalesDetail(LoginRequiredMixin,DetailView):
     model = Sales
     template_name = 'sales/sales_detail.html'
@@ -146,6 +167,11 @@ class existing_sales_create(LoginRequiredMixin, SuccessMessageMixin, CreateView)
     template_name = "sales/sales_form.html"
     fields = '__all__'
     success_message = "New sales successfully added."
+    # success_url = reverse_lazy('existing-sales-create', kwargs={'id': 'pk'})
+    
+    def get_success_url(self):
+        customer_id = Customer.objects.get(pk=self.kwargs['pk']).pk
+        return reverse('existing-sales-create', kwargs={'pk': customer_id})
 
     def get_context_data(self, **kwargs):
         data = super(existing_sales_create, self).get_context_data(**kwargs)
@@ -153,6 +179,7 @@ class existing_sales_create(LoginRequiredMixin, SuccessMessageMixin, CreateView)
             data['items'] = SaleItemFormset(self.request.POST)
         else:
             data['items'] = SaleItemFormset()
+            data['customer'] = Customer.objects.get(pk=self.kwargs['pk'])
         return data
 
     def form_valid(self, form):
@@ -222,3 +249,17 @@ class SalesReturnView(LoginRequiredMixin,DetailView,UpdateView):
 def manage_customers(request):
     customers=Customer.objects.all()
     return render(request,'sales/manage_customers.html',{'customers':customers})
+
+# @csrf_exempt
+def sales_item_total_price(request):
+    item_id = request.GET['item_id']
+    print(item_id)
+    item_quantity = request.GET['item_quantity']
+    
+    sales_item_instance = SalesItem.objects.filter(product=item_id).first()
+    product_sale_price = sales_item_instance.product.sale_price
+    print(product_sale_price,"Sales price::;")
+    total_price = int(item_quantity) * float(product_sale_price)
+   
+    return JsonResponse({'total_price':total_price})
+    

@@ -75,7 +75,9 @@
 			</tbody>
 		    {% endfor %}
 		</table>
-			<button id="add-form" type="button" class="btn btn-primary">Add Row</button>
+			<a id="add-form" type="button" class=" float-right"></a>
+
+
 
 	</div>
 
@@ -85,12 +87,16 @@
 
   </div>
 </div>
+<a href="{% url 'existing-customer-list' %}" class="btn btn-danger ">Back</a>
 
   {% if object %}
     <input type="submit" class="btn btn-primary" value="Update Record">
   {% else %}
     <input type="submit" class="btn btn-primary" value="Add new Sales">
   {% endif %}
+<a href="{% url 'sales_details' customer.pk %}" class="btn btn-success ">View Bill</a>
+
+
 </form>
 
 {% endblock content %}
@@ -99,9 +105,10 @@
 <script src="{% static 'dist/js/formset/jquery.formset.js' %}"></script>
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>-->
 <script>
+  $(document).ready(function(){
 
 $('.formset_row').formset({
-        deleteText: 'remove',
+        deleteText: '',
         prefix: 'items'
 
     });
@@ -118,16 +125,75 @@ $('.formset_row').formset({
         addButton.addEventListener('click', addForm)
 
         function addForm(e){
+       //   window.localStorage.clear();
             e.preventDefault()
             let newForm = birdForm[0].cloneNode(true)
             let formRegex = RegExp(`salesitem_set-(\\d){1}-`,'g')
             formNum++
             newForm.innerHTML = newForm.innerHTML.replace(formRegex, `salesitem_set-${formNum}-`)
-			tbody.appendChild(newForm)
+			    tbody.appendChild(newForm)
             totalForms.setAttribute('value', `${formNum+1}`)
+          //  window.localStorage.setItem('total_form', `${formNum}`);
+           // formValue=window.localStorage.getItem('total_form');
 
         }
 
+        function increamentValue(e){
+          console.log("Inside increament")
+         // e.preventDefault()
+          let newForm = birdForm[0].cloneNode(true)
+          let formRegex = RegExp(`salesitem_set-(\\d){1}-`,'g')
+          formNum++
+          newForm.innerHTML = newForm.innerHTML.replace(formRegex, `salesitem_set-${formNum}-`)
+          return `${formNum+1}`
+      
+
+      }
+
+
+      console.log("Inside if block")
+     $('#id_salesitem_set-'+ 0 + '-quantity').keyup(function(){
+      var item_id = $('#id_salesitem_set-' + 0 + '-product').val();
+        var item_quantity = $(this).val();
+        console.log(item_id,item_quantity,)
+        $.ajax({
+            url : '{% url "sales-item-total-price" %}',
+            data : {'item_id':item_id,'item_quantity':item_quantity},
+            type : 'GET',
+            success : function(data){
+                $('#id_salesitem_set-'+0+'-total_price').val(data['total_price']);
+            }
+        });
+    });
+
+
+
+/*
+  if(formValue>1){
+    
+    console.log("Inside else block")
+
+    $('#id_salesitem_set-'+ formValue + '-quantity').keyup(function(){
+      alert("Inside")
+      var item_id = $('#id_salesitem_set-' + formValue + '-product').val();
+        var item_quantity = $(this).val();
+        console.log(item_id,item_quantity,)
+        $.ajax({
+            url : '{% url "sales-item-total-price" %}',
+            data : {'item_id':item_id,'item_quantity':item_quantity},
+            type : 'GET',
+            success : function(data){
+                $('#id_salesitem_set-'+formValue+'-total_price').val(data['total_price']);
+            }
+        });
+
+    });
+  }*/
+
+
+     
+
+   })
 </script>
 
   {% endblock morejs %}

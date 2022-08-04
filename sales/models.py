@@ -96,6 +96,7 @@ class SalesItem(models.Model):
     
     class Meta:
         verbose_name_plural='salesitem'
+    
     sales_id=models.ForeignKey(Sales, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=0)
@@ -105,7 +106,15 @@ class SalesItem(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return str(self.product)
+        return f'{self.product}'
+    
+    # @property
+    # def get_specific_price_total(self):
+    #     quantity = self.quantity
+    #     price = self.product.sale_price
+    #     total_price = quantity * price
+    #     return total_price
+    
     @property
     def get_price_total(self):
         quantity = self.quantity
