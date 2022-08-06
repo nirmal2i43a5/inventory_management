@@ -74,6 +74,9 @@ class CustomerAddView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = "sales/add_customer.html"
     fields = '__all__'
     success_message = "New Customer successfully added."
+    # success_url = reverse_lazy('sales_details',kwargs={'pk':'pk'})
+    def get_success_url(self):
+        return reverse('existing-sales-create',args=(self.object.id,))
 
 
 #Sales details of customer(sales/sale-details/2<id>)
