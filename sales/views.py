@@ -177,6 +177,7 @@ class existing_sales_create(LoginRequiredMixin, SuccessMessageMixin, CreateView)
         data = super(existing_sales_create, self).get_context_data(**kwargs)
         if self.request.POST:
             data['items'] = SaleItemFormset(self.request.POST)
+            data['customer'] = Customer.objects.get(pk=self.kwargs['pk'])
         else:
             data['items'] = SaleItemFormset()
             data['customer'] = Customer.objects.get(pk=self.kwargs['pk'])
@@ -202,6 +203,7 @@ class existing_sales_create(LoginRequiredMixin, SuccessMessageMixin, CreateView)
                         items.save()
                     else:
                         form.errors['value'] = 'Your entered quantity exceeds inventory quantity'
+                        
                         return self.form_invalid(form)
         return super(existing_sales_create, self).form_valid(form)
 
