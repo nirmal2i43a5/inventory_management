@@ -8,13 +8,16 @@ from django.urls import reverse_lazy
 from django.views.generic import DetailView
 from Inventory.models import *
 from .models import Supplier
+
+#Show Supplier list
 @login_required
 def supplier_list(request):
     supplier=Supplier.objects.all()
     return render(request,'supplier/supplier_list.html',{'supplier':supplier})
 
 
-class ProductCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+# Create a new supplier
+class SupplierCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Supplier
     template_name = "supplier/supplier_form.html"
     fields = '__all__'
@@ -22,7 +25,7 @@ class ProductCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
     def get_form(self):
         '''add date picker in forms'''
-        form = super(ProductCreateView, self).get_form()
+        form = super(SupplierCreateView, self).get_form()
         form.fields['name'].widget = widgets.Textarea(attrs={'rows': 1})
         form.fields['address'].widget = widgets.Textarea(attrs={'rows': 1})
         form.fields['email'].widget = widgets.EmailInput(attrs={'rows': 1})
@@ -30,6 +33,7 @@ class ProductCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         return form
 
 
+#Update supplier
 class SupplierUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Supplier
     template_name = "supplier/supplier_form.html"
@@ -45,11 +49,14 @@ class SupplierUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         return form
 
 
+#Delete supplier
 class SupplierDeleteView(LoginRequiredMixin, DeleteView):
     model = Supplier
     template_name = "supplier/supplier_confirm_delete.html"
     success_url = reverse_lazy('supplier-list')
 
+
+#Supplier detail view
 class SupplierDetailView(LoginRequiredMixin, DetailView):
     model = Product
     template_name = "inventory/supplier_detail.html"

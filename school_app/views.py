@@ -14,6 +14,9 @@ from sales.models import Customer
 from registers.decorators import admin_only
 
 
+
+#Show the data on dashboard 
+#This page is only accessible to admin
 # @login_required
 @admin_only
 def dashboard(request):
@@ -46,10 +49,10 @@ def dashboard(request):
 
 
 
+
+
 def front_page(request):
- 
 	context = {
  
-
 	}
 	return render(request, 'front_page.html', context)

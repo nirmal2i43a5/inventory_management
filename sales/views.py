@@ -135,7 +135,7 @@ class CustomerDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('customer-list')
 
 
-
+#Create new sale for existing customers
 class existing_sales_create(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Sales
     template_name = "sales/sales_form.html"
@@ -143,10 +143,12 @@ class existing_sales_create(LoginRequiredMixin, SuccessMessageMixin, CreateView)
     success_message = "New sales successfully added."
     # success_url = reverse_lazy('existing-sales-create', kwargs={'id': 'pk'})
     
+    
     def get_success_url(self):
         customer_id = Customer.objects.get(pk=self.kwargs['pk']).pk
         return reverse('existing-sales-create', kwargs={'pk': customer_id})
 
+    #Get the data list that should be displayed in the form
     def get_context_data(self, **kwargs):
         data = super(existing_sales_create, self).get_context_data(**kwargs)
         if self.request.POST:
@@ -157,6 +159,7 @@ class existing_sales_create(LoginRequiredMixin, SuccessMessageMixin, CreateView)
             data['customer'] = Customer.objects.get(pk=self.kwargs['pk'])
         return data
 
+    #Validate the data and save it to the database(Validate the stock quantity)
     def form_valid(self, form):
         context = self.get_context_data()
         items = context['items']
