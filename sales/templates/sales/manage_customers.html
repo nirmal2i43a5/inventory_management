@@ -13,7 +13,8 @@
     <table id="dataTable" class="table table-bordered table-hover" data-page-length='100'>
       <thead class="thead-light">
         <tr>
-          <th>S/N</th>
+          <th>S.N</th>
+          <th>Sale Code</th>
           <th>Name</th>
           <th>Phone</th>
           <th>Email address</th>
@@ -25,7 +26,8 @@
 
         {% for customer in customers %}
           <tr>
-            <td>{{ forloop.counter}}</td>
+            <td>{{forloop.counter}}</td>
+            <td>{{ customer.sale_code}}</td>
             <td>{{ customer.name}}</td>
             <td>{{ customer.phone_no}}</td>
             <td>{{customer.email}}</td>

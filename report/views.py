@@ -4,9 +4,11 @@ from django.db.models import Sum
 # Create your views here.
 
 
+#
 def view_customer_report(request):
     customers=Customer.objects.all()
     return render(request,'reports/customers_report.html',{'customers':customers})
+
 
 def each_customer_sales_report(request,id):
     customer = Customer.objects.get(pk = id)
@@ -17,6 +19,8 @@ def each_customer_sales_report(request,id):
     }
     return render(request,'reports/each_customer_sales_report.html',context)
 
+
+#This is the logic for the product report
 def product_report(request):
   products = Product.objects.all()
   sales_quantity_dataset = []

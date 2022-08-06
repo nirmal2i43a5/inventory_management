@@ -20,6 +20,118 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import datetime, timedelta
 
 
+
+
+
+def first_page(request):
+	current_date = datetime.now()
+	return render(request,'registers/firstpage.html',{'current_date':current_date})
+
+
+
+#Login views
+@unauthenticated_user
+def loginPage(request):
+	form = LoginForm()
+	# form = LoginForm(reequest.POST or None)
+
+	if request.method == 'POST':
+		username = request.POST.get('username')
+		password =request.POST.get('password')
+		email =request.POST.get('email')
+		user = authenticate(request,email=email, username=username, password=password)
+		if user is not None:
+			login(request, user)
+			return redirect('home')
+		else:
+			messages.error(request, 'Username OR password is incorrect')
+
+	context = {'form':form}
+	return render(request, 'registers/login.html', context)
+
+
+#Usersignup views
+@unauthenticated_user
+def SignupView(request):
+
+	form = SignupForm()
+ 
+	if request.method == 'POST':
+		form = SignupForm(request.POST)
+		if form.is_valid():
+			user = form.save()
+			username = form.cleaned_data.get('username')#retrieving username from save data from form
+
+			group = Group.objects.get(name='employee')#any time a user signup it is associated with employee group directly
+			user.groups.add(group)
+			print("--------------",user)
+
+			messages.success(request, 'Account was created for ' + username)
+
+			return redirect('register_app:login')
+		
+
+	context = {'form':form}
+	return render(request, 'registers/register.html', context)
+
+
+#User logout views
+class UserLogout(LogoutView):
+	'''
+	I use LOGOUT_REDIRECT_URL in setting.py so,when i logout then setting ma set garako url ma janxa for logout
+	LOGOUT_REDIRECT_URL = '/user/login/
+	'''
+	# template_name = 'logout.html'
+	pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# def employeeProfile(request):
+#     return render(request,'registers/user_view.html')
+
+
+# @admin_only
+# def adminProfile(request):
+#     return render(request,'registers/admin_view.html')
+
+
+	
 # # from django.contrib.auth.mixins import LoginRequiredMixin
 
 # # @allowed_users(allowed_roles=['admin'])
@@ -75,101 +187,6 @@ from datetime import datetime, timedelta
 
 
 
-
-# Create your views here.
-def first_page(request):
-	current_date = datetime.now()
-	return render(request,'registers/firstpage.html',{'current_date':current_date})
-
-
-
-
-@unauthenticated_user
-def loginPage(request):
-	form = LoginForm()
-	# form = LoginForm(reequest.POST or None)
-
-	if request.method == 'POST':
-		username = request.POST.get('username')
-		password =request.POST.get('password')
-		email =request.POST.get('email')
-		user = authenticate(request,email=email, username=username, password=password)
-		if user is not None:
-			login(request, user)
-			return redirect('home')
-		else:
-			messages.error(request, 'Username OR password is incorrect')
-
-	context = {'form':form}
-	return render(request, 'registers/login.html', context)
-
-
-@unauthenticated_user
-def SignupView(request):
-
-	form = SignupForm()
- 
-	if request.method == 'POST':
-		form = SignupForm(request.POST)
-		if form.is_valid():
-			user = form.save()
-			username = form.cleaned_data.get('username')#retrieving username from save data from form
-
-			group = Group.objects.get(name='employee')#any time a user signup it is associated with employee group directly
-			user.groups.add(group)
-			print("--------------",user)
-
-			messages.success(request, 'Account was created for ' + username)
-
-			return redirect('register_app:login')
-		
-
-	context = {'form':form}
-	return render(request, 'registers/register.html', context)
-
-
-"""
-class SignupView(CreateView):
-	template_name = 'registers/register.html'
-	form_class = SignupForm
-	
-	def form_valid(self,form):
-		# email = form.cleaned_data.get('email') #for extra attribite
-		# contact = form.cleaned_data.get('contact')
-		#various sms and others
-		form.save()
-		# user = form.cleaned_data.get('username')
-		# messages.add_message(self.request, messages.INFO, ' Account successfully register for ' +user)
-		return redirect('register_app:login')
-"""
-  
-	
-
-class UserLogout(LogoutView):
-	'''
-	I use LOGOUT_REDIRECT_URL in setting.py so,when i logout then setting ma set garako url ma janxa for logout
-	LOGOUT_REDIRECT_URL = '/user/login/
-	'''
-	# template_name = 'logout.html'
-	pass
-
-
-
-# def employeeProfile(request):
-#     return render(request,'registers/user_view.html')
-
-
-# @admin_only
-# def adminProfile(request):
-#     return render(request,'registers/admin_view.html')
-
-
-	
-
-	
-	
-	
-	
 
 	
 	

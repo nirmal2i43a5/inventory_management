@@ -8,11 +8,11 @@ from django.views import View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.forms import widgets
 from django.urls import reverse_lazy
-
-
 from .models import Product
 import io,csv
 
+
+# Show the list of products
 @login_required
 def inventory_list(request):
   products = Product.objects.all()
@@ -28,6 +28,7 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
+# Create a new product
 class ProductCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Product
     template_name = "inventory/product_form.html"
@@ -47,59 +48,77 @@ class ProductCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         return form
 
 
+# Update a product
 class ProductUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Product
     template_name = "inventory/product_form.html"
 
     fields = '__all__'
     success_message = "Record successfully updated."
+    success_url = reverse_lazy('inventory_list')
 
     def get_form(self):
+        print("Inside update:::::::::::::::::")
+        
         form = super(ProductUpdateView, self).get_form()
         form.fields['product'].widget = widgets.Textarea(attrs={'rows': 2})
         form.fields['description'].widget = widgets.Textarea(attrs={'rows': 2})
-
         return form
 
 
+# Delete a product
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = "inventory/product_confirm_delete.html"
 
     success_url = reverse_lazy('inventory_list')
 
+
+
+
+
+
+
+
+
+
+
+
+# Upload a csv file
 class ProductBulkUploadView(View):
-    def get(self, request):
-        template_name = 'inventory/products_upload.html'
-        return render(request,template_name)
+    pass
+    # def get(self, request):
+    #     template_name = 'inventory/products_upload.html'
+    #     return render(request,template_name)
 
-    def post(self, request):
-        paramFile = io.TextIOWrapper(request.FILES['productfile'].file)
-        portfolio1 = csv.DictReader(paramFile)
-        list_of_dict = list(portfolio1)
-        objs=[
-            Product(
-                product=row['product'],
-                description=row['description']
-            )
-            for row in list_of_dict
-        ]
-        prod=objs[0].product
-        check = Product.objects.filter(product=prod).exists()
-        print(check)
+    # def post(self, request):
+    #     paramFile = io.TextIOWrapper(request.FILES['productfile'].file)
+    #     portfolio1 = csv.DictReader(paramFile)
+    #     list_of_dict = list(portfolio1)
+    #     objs=[
+    #         Product(
+    #             product=row['product'],
+    #             description=row['description']
+    #         )
+    #         for row in list_of_dict
+    #     ]
+    #     prod=objs[0].product
+    #     check = Product.objects.filter(product=prod).exists()
+    #     print(check)
 
-        if not check:
-            msg=Product.objects.bulk_create(objs)
-        return redirect('inventory_list')
+    #     if not check:
+    #         msg=Product.objects.bulk_create(objs)
+    #     return redirect('inventory_list')
 
 @login_required
 def downloadcsv(request):
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="product_template.csv"'
+    pass
+    # response = HttpResponse(content_type='text/csv')
+    # response['Content-Disposition'] = 'attachment; filename="product_template.csv"'
 
-    writer = csv.writer(response)
-    writer.writerow(['product', 'description'])
+    # writer = csv.writer(response)
+    # writer.writerow(['product', 'description'])
 
-    return response
+    # return response
 
 

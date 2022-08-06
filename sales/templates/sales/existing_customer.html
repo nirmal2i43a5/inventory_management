@@ -11,6 +11,7 @@
       <thead class="thead-light">
         <tr>
           <th>S/N</th>
+          <th>Sale Code</th>
           <th>Name</th>
           <th>Action</th>
 
@@ -21,6 +22,7 @@
         {% for sale in sales %}
           <tr >
             <td>{{ forloop.counter}}</td>
+            <td>{{ sale.sale_code}}</td>
             <td>{{ sale.name}}</td>
             <td>
               <a href="{% url 'existing-sales-create' sale.id %}" class = "btn btn-info"><i class = "fas fa-plus"></i> sale products </a>

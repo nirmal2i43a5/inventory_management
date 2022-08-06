@@ -94,7 +94,7 @@
   {% else %}
     <input type="submit" class="btn btn-primary" value="Add new Sales">
   {% endif %}
-<a href="{% url 'sales_details' customer.pk %}" class="btn btn-success ">View Bill</a>
+<a href="{% url 'sales_details' customer.pk %}" class="btn btn-success ">Sales Bill</a>
 
 
 </form>
@@ -106,7 +106,8 @@
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>-->
 <script>
   $(document).ready(function(){
-
+    $('.table th:nth-child(4)').hide();//removing delete th from formset
+    
 $('.formset_row').formset({
         deleteText: '',
         prefix: 'items'
@@ -167,7 +168,9 @@ $('.formset_row').formset({
     });
 
 
-
+/*
+    if ($('#id_salesitem_set-0-quantity').val('')) {
+      $('#id_salesitem_set-0-total_price').val('');}*/
 /*
   if(formValue>1){
     
