@@ -20,6 +20,7 @@
           <th>Unit</th>
           <th>Purchase price</th>
           <th>Sale price</th>
+          <th>Available Discount</th>
           <th>Supplier</th>
           <th>Storage location</th>
           <th>Action</th>
@@ -35,6 +36,14 @@
             <td>{{prod.Quantity|floatformat:0}}</td>
             <td>{{ prod.purchase_price}}</td>
             <td>{{ prod.sale_price}}</td>
+            
+            {% if prod.discount %}
+            <td><div class="badge badge-success">{{prod.discount}}%(Only {{prod.get_final_price_after_discount}})</div></td>
+            {% else %}
+            <td><div class="badge badge-success">No discount</div></td>
+              
+            {% endif %}
+              
             <td>{{ prod.supplier}}</td>
             <td>{{ prod.stored_location}}</td>
             <td>

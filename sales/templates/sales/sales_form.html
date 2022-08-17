@@ -107,6 +107,7 @@
 <script>
   $(document).ready(function(){
     $('.table th:nth-child(4)').hide();//removing delete th from formset
+    $('#id_salesitem_set-0-product').attr('required',true);
     
 $('.formset_row').formset({
         deleteText: '',
@@ -152,7 +153,7 @@ $('.formset_row').formset({
       }
 
 
-      console.log("Inside if block")
+    
      $('#id_salesitem_set-'+ 0 + '-quantity').keyup(function(){
       var item_id = $('#id_salesitem_set-' + 0 + '-product').val();
         var item_quantity = $(this).val();

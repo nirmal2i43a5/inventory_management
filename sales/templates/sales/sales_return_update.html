@@ -95,7 +95,7 @@
                         </tbody>
                         {% endfor %}
                     </table>
-                    <button id="add-form" type="button" class="btn btn-primary">Add Row</button>
+                    <!-- <button id="add-form" type="button" class="btn btn-primary">Add Row</button> -->
 
                 </div>
 
@@ -115,12 +115,27 @@
 {% endblock content %}
 
 {% block morejs %}
+
 <script src="{% static 'dist/js/formset/jquery.formset.js' %}"></script>
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>-->
 <script>
-
+    $('#id_salesitem_set-0-quantity').keyup(function(){
+        var item_id = $('#id_salesitem_set-' + 0 + '-product').val();
+          var item_quantity = $(this).val();
+          console.log(item_id,item_quantity,)
+          $.ajax({
+              url : '{% url "sales-item-total-price" %}',
+              data : {'item_id':item_id,'item_quantity':item_quantity},
+              type : 'GET',
+              success : function(data){
+                  $('#id_salesitem_set-'+0+'-total_price').val(data['total_price']);
+              }
+          });
+      });
+    $('.table th:nth-child(4)').hide();//removing delete th from formset
+    $('#id_salesitem_set-0-product').attr('required',true);
     $('.formset_row').formset({
-        deleteText: 'remove',
+     //   deleteText: 'remove',
         prefix: 'items'
 
     });
@@ -146,7 +161,7 @@
         totalForms.setAttribute('value', `${formNum + 1}`)
 
     }
-
+   
 </script>
 
 {% endblock morejs %}

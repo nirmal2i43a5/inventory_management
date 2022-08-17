@@ -149,23 +149,48 @@
                 </p>
               </a>
             </li> 
-            <!-- <li class="nav-item">
+           <!-- <li class="nav-item">
               <a href="{% url 'sales-list' %}" class="nav-link">
                 <i class="nav-icon fas fa-store"></i>
                 <p>
                   Manage Sales
                 </p>
               </a>
-            </li>  -->
-                     <!-- <li class="nav-item">
-              <a href="{% url 'sales-return-list' %}" class="nav-link">
-                <i class="nav-icon fas fa-undo"></i>
-                <p>
-                  Sales Return
-                </p>
-              </a>
-            </li> -->
-          </li> 
+            <!-- </li>   -->
+            
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fas  fa-book"></i>
+              <p>
+                Manage Return
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+      
+            <ul class="nav nav-treeview">
+              <li class="nav-item"> 
+                <a href="{% url 'sales-return-list' %}" class="nav-link">
+                  <i class="nav-icon fas fa-undo"></i>
+                  <p>
+                    Sales Return
+                  </p>
+                </a>
+              </li> 
+            </li> 
+              <li class="nav-item">
+                <a href="{% url 'return-product-list' %}" class="nav-link">
+                  <i class="fas  fa-circle"></i>
+                  <p>
+                    Return List
+          
+                  </p>
+                </a>
+              </li>
+             
+          
+            </ul>
+          </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="fas  fa-book"></i>

@@ -5,3 +5,6 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ['product','description']
 
 admin.site.register(Product, ProductAdmin)
+
+
+admin.site.register(ReturnProduct)

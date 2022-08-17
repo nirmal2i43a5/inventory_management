@@ -3,6 +3,8 @@
 {% block title %}{{customer.name}} ::Sales Report{% endblock title %}
 
 {% block breadcrumb %}
+<a class="btn btn-danger" href="{% url 'customers_report' %}">
+   Back</a>
 <a class="btn btn-secondary" href="{% url 'existing-customer-list' %}"><i
     class="fas fa-plus"></i>Existing Customer</a>
 <a class="btn btn-primary" href="{% url 'create-customer' %}"><i
@@ -20,7 +22,7 @@
           <th>Total order</th>
           <th>Total Price</th>
           <th>Date</th>
-          <th>Action</th>
+          <!-- <th>Action</th> -->
 
 
         </tr>
@@ -34,9 +36,9 @@
             <td>{{sale.total_qty}}</td>
             <td>{{sale.total_order}}</td>
             <td>{{sale.date}}</td>
-            <td>
-              <a href="{% url 'sales_details' sale.id %}" class = "btn btn-success"><i class = "fas fa-eye"></i> view sales details </a>
-            </td>
+            <!-- <td>
+              <a href="{% url 'sales_details' sale.customer.id %}" class = "btn btn-success"><i class = "fas fa-eye"></i> view sales details </a>
+            </td> -->
 
           </tr>
         {% endfor %}

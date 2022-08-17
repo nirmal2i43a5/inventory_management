@@ -97,6 +97,21 @@ def sales_details(request,pk):
     return render(request,'sales/sales_detail.html',context)
 
 
+def sales_details_from_report(request,pk):
+    customer_instance = Customer.objects.get(id=pk)
+    sales_object = Sales.objects.filter(customer = customer_instance).first()
+    
+    sales = customer_instance.sales_set.all().filter(date = datetime.date.today())
+    sales_dataset = []
+    sales_items = SalesItem.objects.filter(sales_id__customer = customer_instance,sales_id__date = datetime.date.today())
+    for sale in sales:
+        sale_itm = Sales.objects.filter(pk = sale.id)
+        sales_dataset.append({'sale_itm':sale_itm})
+        
+    context = {'sales_items':sales_items,'customer_instance':customer_instance,'sales':sales_dataset,
+               'sales_object':sales_object}
+    return render(request,'sales/sales_detail_from_report.html',context)
+
 
 
 #Sales to customer(sales/existing/)
@@ -172,7 +187,12 @@ class existing_sales_create(LoginRequiredMixin, SuccessMessageMixin, CreateView)
                     qt=i.cleaned_data['quantity']
                     print(qt)
                     sold_item=Product.objects.get(product=product)
-                    print(sold_item.Quantity)
+                    if sold_item.discount:
+                        pass
+                    else:
+                        
+                        pass
+                   
                     if qt <= int(sold_item.Quantity):
                         sold_item.Quantity -= qt
                         sold_item.save()
@@ -193,58 +213,22 @@ class existing_sales_create(LoginRequiredMixin, SuccessMessageMixin, CreateView)
 # This is the logic to get the total price while creating the sales in (sales/exist/create/1<id>)
 def sales_item_total_price(request):
     item_id = request.GET['item_id']
-    print(item_id)
+    product_instance = Product.objects.filter(pk=item_id).first()
     item_quantity = request.GET['item_quantity']
+    if product_instance.discount:
+        price_after_discount = (product_instance.sale_price) -  (product_instance.sale_price * (product_instance.discount)/100)
+        total_price = int(item_quantity) * float(price_after_discount)
+    else:
+        product_sale_price = product_instance.sale_price
+        total_price = int(item_quantity) * float(product_sale_price)
     
-    sales_item_instance = SalesItem.objects.filter(product=item_id).first()
-    product_sale_price = sales_item_instance.product.sale_price
-    print(product_sale_price,"Sales price::;")
-    total_price = int(item_quantity) * float(product_sale_price)
-   
     return JsonResponse({'total_price':total_price})
+
     
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     
 #sales product list(sales)
 @login_required
@@ -253,48 +237,66 @@ def sales_list(request):
     return render(request,'sales/sales_list.html',{'sales':sales})
 
 def sales_return_list(request):
-    pass
-    # sales=Sales.objects.all().order_by('-id')
-    # return render(request,'sales/sales_return_list.html',{'sales':sales})
+    sales=Sales.objects.all().order_by('-id')
+    return render(request,'sales/sales_return_list.html',{'sales':sales})
     
 '''-------------------------------Below is the test code---------------------------'''
 
 class SalesReturnView(LoginRequiredMixin,DetailView,UpdateView):
-    pass
-    # model = Sales
-    # fields='__all__'
-    # template_name = 'sales/sales_return_update.html'
-
-    # def get_context_data(self, **kwargs):
-    #     data = super(SalesReturnView, self).get_context_data(**kwargs)
-    #     if self.request.POST:
-    #         data['items'] = SaleItemFormset(self.request.POST)
-    #     else:
-    #         data['items'] = SaleItemFormset()
-    #     return data
-
-    # def form_valid(self, form):
-    #     context = self.get_context_data()
-    #     name=context['object']
-    #     name_id=Customer.objects.get(name=name)
-    #     sales_id=Sales.objects.filter(customer_id=name_id).first()
-    #     items = context['items']
-    #     with transaction.atomic():
-    #         if items.is_valid():
-    #             items.instance = form.save(commit=False)
-    #             for i in items:
-    #                 prod = i.cleaned_data['product']
-    #                 qt=i.cleaned_data['quantity']
-    #                 product=prod.product
-    #                 sales_item_id = SalesItem.objects.filter(sales_id_id=sales_id, product_id=prod.id)
-    #                 for i in sales_item_id:
-    #                     i.quantity -= qt
-    #                     i.save()
-    #                     sold_item=Product.objects.get(product=product)
-    #                     sold_item.Quantity +=qt
-    #                     sold_item.save()
-    #     return super(SalesReturnView, self).form_valid(form)
+    model = Sales
+    fields='__all__'
+    template_name = 'sales/sales_return_update.html'
     
+    def get_success_url(self):
+        # customer_id = Customer.objects.get(pk=self.kwargs['pk']).pk
+        return reverse('sales-return', kwargs={'pk': self.kwargs['pk']})
+
+    def get_context_data(self, **kwargs):
+        data = super(SalesReturnView, self).get_context_data(**kwargs)
+        if self.request.POST:
+            data['items'] = SaleItemFormset(self.request.POST)
+            # data['customer'] = Customer.objects.get(pk=self.kwargs['pk'])
+        else:
+            data['items'] = SaleItemFormset()
+            # data['customer'] = Customer.objects.get(pk=self.kwargs['pk'])
+        return data
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        name=context['object']
+        # sales_instance = Sales.objects.get(pk=self.kwargs['pk'])
+        # print(name.pk,"----------------ddd--------")
+        # name_id=Customer.objects.filter(name=name).first()
+        sales_id=Sales.objects.filter(pk =self.kwargs['pk']).first()
+        items = context['items']
+        with transaction.atomic():
+            if items.is_valid():
+                items.instance = form.save(commit=False)
+                for i in items:
+                    prod = i.cleaned_data['product']
+                    qt=i.cleaned_data['quantity']
+                    product=prod.product
+                    sales_item_id = SalesItem.objects.filter(sales_id_id=sales_id, product_id=prod.id)
+                    for sales_item in sales_item_id:
+                        print("Inside for loop")
+                        '''After product return deduct from the inventory and assign that to return list'''
+                        
+                        return_product = ReturnProduct.objects.create(quantity = sales_item.quantity, product = sales_item.product )
+                        return_product.save()
+                        
+                        sales_item.quantity -= qt
+                        sales_item.save()
+                    
+                        sold_item=Product.objects.get(product=product)
+                        sold_item.Quantity +=qt
+                        sold_item.save()
+        return super(SalesReturnView, self).form_valid(form)
+    
+
+def product_return_list(request):
+    return_lists=ReturnProduct.objects.all()
+    return render(request,'sales/return_product_list.html',{'return_lists':return_lists})
+
 def SalesUpdateView(request, sales_id):
     pass
     # sale = Sales.objects.get(id=sales_id)

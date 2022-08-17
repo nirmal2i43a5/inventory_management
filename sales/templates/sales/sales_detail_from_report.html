@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content-header %}
+<div class="card-header">
+  <div class="card-tools">
+	<div class="d-flex justify-content-end">
+		
+	  <!-- <a id = "edit" href="" class="btn btn-success">
+	   Edit
+	  </a>
+	  <a id = "delete" href="" class="ml-2 btn btn-danger">
+		Delete
+	  </a> -->
+	  <div class="col-12">
+		<button class="btn btn-info" id="print_button"><i class="fas fa-sm fa-print"></i>
+		  <strong>Print</strong></a></button>
+	  </div>
+	</div>
+		
+  </div>
+</div>
+{% endblock content-header %}
+
+{% block content %}
+
+
+
+
+	<div class='header'>
+		
+		<p class='title text-bold'>ORDER INVOICE </p>
+		<br>
+	</div>
+	
+	<div class='details'>
+		Bill No : 00{{customer_instance.pk}}
+		<br>
+		Customer Name : {{customer_instance.name}}
+		<br>
+		Customer Code : {{customer_instance.sale_code}}
+		<br>
+	  Date : {% now " F,j, Y " %}
+		<hr class='hrItem' />
+	</div>
+<br>
+
+<div class='card'>
+					<div class='table-responsive'>
+					<table class='table' id='sales_details'>
+						<thead>
+							<tr>
+								<th>Item</th>
+								<th>Quantity</th>
+								<th>Price</th>
+							</tr>
+						</thead>
+						<tbody>
+					{% for saleitem in sales_items %}
+
+
+							<tr>
+								<td>{{ saleitem.product }}</td>
+                                <td class="countable_quantity">{{saleitem.quantity}}</td>
+                                <td class="countable_total_sum">{{saleitem.total_price}}</td>
+
+							</tr>
+						{% endfor %}
+                        <tr>
+								<td class="btn btn-primary" style="width:40%">Total</td>
+                                <td style="font-size:20px" id="total_quantity"></td>
+                                <td style="font-size:20px" id="total_sum"></td>
+
+							</tr>
+
+						</tbody>
+
+					</table>
+					</div>
+
+
+				</div>
+
+				<a href="{% url 'customers_report' %}" class="btn btn-danger ">Back</a>
+	
+	<style type="text/css">
+		body {
+			
+			font-size: 13px;
+		
+		}
+		.header {
+			font-size: 25px;
+			font-weight: 100;
+			text-align: center;
+			color: #007cae;
+		}
+
+
+		tr:first-child{
+			outline: thin solid transparent;
+			height: 40px;
+		  }
+	   
+	</style>
+{% endblock content %}
+{% block javascript %}
+<script>
+  $("#print_button").click(function (event) {
+    //event.preventDefault();
+	$('#print_button').hide();
+	$('#edit').hide();
+	$('#delete').hide();
+	window.print();
+  //  $('.student__idCard').print();
+  window.location.reload();
+  });
+
+  var quantity_sum = 0;
+  var price_sum = 0;
+var table = document.getElementById("sales_details");
+var ths = table.getElementsByTagName('th');
+var tds_quantity = table.getElementsByClassName('countable_quantity');
+var tds_price_sum = table.getElementsByClassName('countable_total_sum');
+for(var i=0;i<tds_quantity.length;i++){
+	quantity_sum += isNaN(tds_quantity[i].innerText) ? 0 : parseInt(tds_quantity[i].innerText);
+}
+for(var i=0;i<tds_price_sum.length;i++){
+	price_sum += isNaN(tds_price_sum[i].innerText) ? 0 : parseInt(tds_price_sum[i].innerText);
+}
+
+var row = table.insertRow(table.rows.length);
+var cell = row.insertCell(0);
+cell.setAttribute('colspan', ths.length);
+document.getElementById('total_quantity').innerText = quantity_sum;
+document.getElementById('total_sum').innerText = price_sum;
+/*
+var totalBalance  = document.createTextNode('Total Quantity ' + sum);
+cell.appendChild(totalBalance);*/
+
+</script>
+
+
+{% endblock %}

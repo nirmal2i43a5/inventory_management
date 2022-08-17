@@ -8,6 +8,8 @@ path('customers/index/',manage_customers,name='customer-list'),
 path('<pk>/delete/', CustomerDeleteView.as_view(), name='customer-delete'),
 path('create-customer/', CustomerAddView.as_view(), name='create-customer'),
 path('sale-detail/<int:pk>',sales_details, name='sales_details'),
+path('sales-detail/<int:pk>',sales_details_from_report, name='sales_details_from_report'),
+
 path('<int:sales_id>/update/', SalesUpdateView, name='sales-update'),
 path('return/',sales_return_list,name='sales-return-list'),
 path('existing/',existing_customer_list,name='existing-customer-list'),
@@ -17,6 +19,7 @@ path('exist/create/<int:pk>',existing_sales_create.as_view(),name='existing-sale
 path('<int:pk>/return/',SalesReturnView.as_view(),name='sales-return'),
 
 path('sales-item-total-price/',sales_item_total_price,name='sales-item-total-price'),
+path('return-product-list/',product_return_list,name='return-product-list'),
 
 
 ]
