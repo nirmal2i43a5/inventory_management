@@ -221,12 +221,20 @@ def sales_item_total_price(request):
     else:
         product_sale_price = product_instance.sale_price
         total_price = int(item_quantity) * float(product_sale_price)
+    product_in_stock = product_instance.Quantity
     
-    return JsonResponse({'total_price':total_price})
+    return JsonResponse({'total_price':total_price,'product_in_stock':product_in_stock})
 
     
     
+def get_total_stock(request):
+    print("Inside views")
+    item_id = request.GET['item_id']
+    product_instance = Product.objects.filter(pk=item_id).first()
+
+    product_in_stock = product_instance.Quantity
     
+    return JsonResponse({'product_in_stock':product_in_stock})
     
 
     

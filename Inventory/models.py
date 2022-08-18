@@ -37,7 +37,6 @@ class ProductBulkUpload(models.Model):
 
 
 class ReturnProduct(models.Model):
-	name = models.CharField(max_length=200)
 	quantity = models.IntegerField(max_length=100,default=0,null=True, blank=True)
 
 	product = models.ForeignKey(Product, on_delete=models.CASCADE)

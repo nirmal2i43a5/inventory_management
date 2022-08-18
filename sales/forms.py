@@ -19,7 +19,7 @@ class SaleItemForm(ModelForm):
  
     class Meta:
         model=SalesItem
-        fields=['product','quantity','total_price']
+        fields=['product','quantity','total_price',]
         widgets = {
         'total_price': forms.NumberInput(attrs={'readonly': 'readonly'}),
     }

@@ -5,7 +5,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
-from Inventory.models import Product
+from Inventory.models import Product, ReturnProduct
 from datetime import datetime, timedelta
 from sales.forms import SaleItemForm
 from sales.models import Sales, SalesItem
@@ -20,6 +20,7 @@ from registers.decorators import admin_only
 @admin_only
 def dashboard(request):
 	total_product = Product.objects.count()
+	total_returns = ReturnProduct.objects.count()
 	total_supplier = Supplier.objects.count()
 	total_sales = SalesItem.objects.all()
 	# today_customers=Customer.objects.count()
@@ -41,7 +42,8 @@ def dashboard(request):
 		'customer':today_customers,
 		'order':today_sales.count(),
 		'today_sales_price': sales_total_price,
-		'orders':total_sales
+		'orders':total_sales,
+  'total_returns':total_returns
 
 	}
 	return render(request, 'index.html', context)

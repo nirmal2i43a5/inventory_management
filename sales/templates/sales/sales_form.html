@@ -70,6 +70,7 @@
 				</td>
 
 			    {% endfor %}
+      <td id="product_in_stock"></td>
 			</tr>
 
 			</tbody>
@@ -168,7 +169,25 @@ $('.formset_row').formset({
         });
     });
 
+    $('#id_salesitem_set-'+ 0 + '-product').click(function(){
+      
+      var item_id = $('#id_salesitem_set-' + 0 + '-product').val();
+        console.log(item_id)
+        $.ajax({
+            url : '{% url "get-total-stock" %}',
+            data : {'item_id':item_id},
+            type : 'GET',
+            success : function(data){
+              if(data['product_in_stock']==0){
+                $('#product_in_stock').html("<span class='badge badge-danger'>Out of Stock</span>");
 
+              }
+              else{
+                $('#product_in_stock').html("<span class='badge badge-success'>Available Stock</span>" + " : "+ data['product_in_stock']);
+              }
+            }
+        });
+    });
 /*
     if ($('#id_salesitem_set-0-quantity').val('')) {
       $('#id_salesitem_set-0-total_price').val('');}*/
