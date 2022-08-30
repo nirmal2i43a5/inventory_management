@@ -36,7 +36,6 @@ class SignupForm(UserCreationForm):
 	password2=forms.CharField(widget=forms.TextInput(attrs={"placeholder": " Confirm Password",'type' : 'password'}))
 	
 
-	
 	class Meta:
 		model = User
 		

@@ -97,6 +97,7 @@ def sales_details(request,pk):
     return render(request,'sales/sales_detail.html',context)
 
 
+#sales detail from report portion
 def sales_details_from_report(request,pk):
     customer_instance = Customer.objects.get(id=pk)
     sales_object = Sales.objects.filter(customer = customer_instance).first()
@@ -244,12 +245,23 @@ def sales_list(request):
     sales=Sales.objects.all().order_by('-id')
     return render(request,'sales/sales_list.html',{'sales':sales})
 
-def sales_return_list(request):
-    sales=Sales.objects.all().order_by('-id')
+
+#Show sales of each customer
+def return_customer_each_sales(request,pk):
+    customer = Customer.objects.get(pk=pk)
+    sales = customer.sales_set.all()
     return render(request,'sales/sales_return_list.html',{'sales':sales})
+
+
+#View customer list to return product
+def view_customer_return(request):
+    customers=Customer.objects.all()
+    return render(request,'sales/return_customer_list.html',{'customers':customers})
     
 '''-------------------------------Below is the test code---------------------------'''
 
+
+#This logic is to return the existing sales of a customer
 class SalesReturnView(LoginRequiredMixin,DetailView,UpdateView):
     model = Sales
     fields='__all__'
@@ -289,7 +301,7 @@ class SalesReturnView(LoginRequiredMixin,DetailView,UpdateView):
                         print("Inside for loop")
                         '''After product return deduct from the inventory and assign that to return list'''
                         
-                        return_product = ReturnProduct.objects.create(quantity = sales_item.quantity, product = sales_item.product )
+                        return_product = ReturnProduct.objects.create(quantity = qt, product = sales_item.product )
                         return_product.save()
                         
                         sales_item.quantity -= qt
@@ -300,7 +312,9 @@ class SalesReturnView(LoginRequiredMixin,DetailView,UpdateView):
                         sold_item.save()
         return super(SalesReturnView, self).form_valid(form)
     
+    
 
+#This is the logic to return the return list of product
 def product_return_list(request):
     return_lists=ReturnProduct.objects.all()
     return render(request,'sales/return_product_list.html',{'return_lists':return_lists})

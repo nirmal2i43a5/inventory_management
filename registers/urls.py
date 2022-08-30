@@ -14,10 +14,7 @@ urlpatterns = [
   
     # path('logout/',a)
    
-    
 ]
-
-
 
 
 

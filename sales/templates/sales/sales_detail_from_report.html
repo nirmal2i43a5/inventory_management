@@ -52,6 +52,8 @@
 							<tr>
 								<th>Item</th>
 								<th>Quantity</th>
+								<th>Price Per Quantity</th>
+								<th>Discount</th>
 								<th>Price</th>
 							</tr>
 						</thead>
@@ -62,6 +64,8 @@
 							<tr>
 								<td>{{ saleitem.product }}</td>
                                 <td class="countable_quantity">{{saleitem.quantity}}</td>
+								<td>{{saleitem.product.sale_price}}</td>
+								<td>{{saleitem.product.discount}} %</td>
                                 <td class="countable_total_sum">{{saleitem.total_price}}</td>
 
 							</tr>
@@ -69,6 +73,9 @@
                         <tr>
 								<td class="btn btn-primary" style="width:40%">Total</td>
                                 <td style="font-size:20px" id="total_quantity"></td>
+								<td></td>
+ 
+                                <td></td>
                                 <td style="font-size:20px" id="total_sum"></td>
 
 							</tr>

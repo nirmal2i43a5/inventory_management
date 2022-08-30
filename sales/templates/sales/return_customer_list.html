@@ -11,23 +11,24 @@
       <thead class="thead-light">
         <tr>
           <th>S/N</th>
-          <th>Sales Code</th>
-          <th> Date</th>
-         <th>Action</th>
+          <th>Name</th>
+          <th>Created Date</th>
+          <th>Action</th>
+
         </tr>
       </thead>
       <tbody>
 
-        {% for sale in sales %}
-          <tr>
+        {% for customer in customers %}
+          <tr >
             <td>{{ forloop.counter}}</td>
-            <td>{{ sale.salesitem_set.all.0}}</td>
-            <td>{{ sale.date}}</td>
+            <td>{{ customer.name}}</td>
+            <td>{{ customer.created_at}}</td>
             <td>
-         <a href="{% url 'sales-return' sale.id %}" class = "btn btn-success text-bold"><i class = "nav-icon fas fa-undo"></i>
-                 return sales </a> 
+              <a href="{% url 'return-customer-sale' customer.pk %}" class = "btn btn-success text-bold">
+                View </a> 
+           
             </td>
-
           </tr>
         {% endfor %}
 

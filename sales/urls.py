@@ -11,7 +11,8 @@ path('sale-detail/<int:pk>',sales_details, name='sales_details'),
 path('sales-detail/<int:pk>',sales_details_from_report, name='sales_details_from_report'),
 
 path('<int:sales_id>/update/', SalesUpdateView, name='sales-update'),
-path('return/',sales_return_list,name='sales-return-list'),
+path('return/',view_customer_return,name='sales-return-list'),
+path('return/<pk>/',return_customer_each_sales,name='return-customer-sale'),
 path('existing/',existing_customer_list,name='existing-customer-list'),
 path('create/<int:pk>',SalesCreateView.as_view(),name='sales-create'),
 

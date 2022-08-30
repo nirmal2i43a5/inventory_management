@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load auth_extras %}
 {% block title %}Returned List{% endblock title %}
-
 {% block content %}
   <div class="table-responsive">
     <table id="dataTable" class="table table-bordered table-hover" data-page-length='100'>
@@ -16,32 +15,24 @@
         </tr>
       </thead>
       <tbody>
-
         {% for prod in return_lists %}
           <tr >
             <td>{{ forloop.counter}}</td>
             <td>{{ prod.product.product_code}}</td>
             <!-- <td>{{ prod.product}}</td> -->
-
             <td>{{ prod.product}}</td>
             <td>{{prod.quantity}}</td>
             <td>{{prod.created_at}}</td>
             <!-- <td>{{ prod.product.sale_price}}</td> -->
-            
-          
-
+           
+         
 
 
           </tr>
         {% endfor %}
-
       </tbody>
     </table>
   </div>
 {% endblock content %}
-
-
 {% block morejs %}
-
-
 {% endblock morejs %}

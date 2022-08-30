@@ -50,6 +50,7 @@ def loginPage(request):
 	return render(request, 'registers/login.html', context)
 
 
+
 #Usersignup views
 @unauthenticated_user
 def SignupView(request):

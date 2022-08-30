@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load widget_tweaks %}
+{% block title %}Sales Return{% endblock title %}
 {% block content-header %}
 <div class="card-header">
     <div class="card-tools">
@@ -17,30 +18,11 @@
 
 {% block content %}
 
-<h4> Product Description</h4>
-<div class="col-lg-12" style="display:flex">
-    <div class='col-sm-6 card'>
-        <div class='table-responsive'>
-            <table class='table table-hover' id='myTable'>
-                <thead>
-                    <tr>
-                        <th>Item</th>
-                        <th>Quantity</th>
-                    </tr>
-                </thead>
-                <tbody>
 
-                    {% for saleitem in sales.salesitem_set.all %}
-                    <tr>
-                        <td>{{ saleitem.product }}</td>
-                        <td>{{saleitem.quantity}}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class='col-sm-6 card'>
+
+<div class="col-lg-12" style="display:flex">
+   
+    <div class='col-sm-12 card'>
         <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {% for field in form %}
@@ -55,7 +37,7 @@
                     {% endif %}
                 </label>
 
-                <div id="form-container" class="col-sm-9">
+                <div id="form-container" class="col-sm-12">
                     {{ field | add_class:"form-control" }}
                     {% if field.help_text %}
                     <small>{{ field.help_text|safe }}</small>
@@ -104,13 +86,37 @@
             {% endfor %}
 
 {% if object %}
-<input type="submit" style="height:40px" class="btn btn-primary" value="Update Record">
+<input type="submit" style="height:40px;float:right;" class="btn btn-primary mb-4" value="Return Sales">
 {% else %}
 <input type="submit" class="btn btn-primary" value="Add new Sales">
 {% endif %}
 </form>
 </div>
 
+</div>
+
+<hr>
+<div class='table-responsive'>
+    <table class='table table-hover' id='myTable'>
+        <thead>
+            <tr>
+                <th>Item</th>
+                 <th></th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for saleitem in sales.salesitem_set.all %}
+            <tr>
+                <td>{{ saleitem.product }}</td>
+                <td></td>
+                <td>{{saleitem.quantity}}</td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock content %}
 
